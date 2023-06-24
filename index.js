@@ -396,13 +396,6 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
 // ===== ДВИЖОК =====
 //рисую все на экране (движок игры)
 let fps = 0;
-function outTextblink(string = "", color = "#FFF", speed = 100) {
-  let long = Math.round(speed / 2);
-  if ((fps > 1) && (fps < long)) {
-      fps += 1;
-      textDraw(canvas.width / 2 - 160, canvas.height / 2, string, color, 7);
-    } else { fps > speed ? fps = 0 : {}; };
-};
 
 function animate() {
   //очищаю экран
@@ -427,19 +420,22 @@ function animate() {
     (musicFon.muted ? "#F00" : "#FFF"),
     "1"
   );
-  // textDraw(
-  //  canvas.width - 100,
-  //   60,
-  //   "count:" + fps ,
-  //   "#FFFFFF",
-  //   "1"
-  // );
-  // вывожу сообщение о том, что игра на паузе (нет движения - скорость = 0)
 
   if (!gameSpeed) {
-    fps += 1;
-    outTextblink("ПАУЗА", "#FF5", 100)
-  } else {fps = 0};
+    if ((fps > 1) && (fps < 100 / 2)) {
+      fps += 1;
+      textDraw(canvas.width / 2 - 160, canvas.height / 2, "ПАУЗА", "#FF5", "7");
+    } else { fps > 100 ? fps = 0 : fps += 1};
+  }
+
+  if (score = 100 && score < 105) {
+    if ((fps > 1) && (fps < 300 / 2)) {
+      fps += 1;
+      textDraw(canvas.width / 2 - 160, canvas.height / 2, "Андрей", "#FF5", "3");
+      textDraw(canvas.width / 2 - 170, canvas.height / 2 +45 , "Ты молодец!", "#FF5", "2");
+      textDraw(canvas.width / 2 - 210, canvas.height / 2 +90, "Собрал " + "100" + " звёзд!", "#FF5", "2");
+    } else { fps > 310 ? fps = 0 : fps += 1 };
+  }
   requestAnimationFrame(animate);
 }
 
