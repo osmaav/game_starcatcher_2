@@ -443,8 +443,17 @@ function animate() {
     } else { fps > 80 ? fps = 0 : fps += 1};
   }
 
-  if (score >= 100 && score <= 110) {
-    gameSpeed = false;
+  if (score = 100) {
+    gameSpeed = gameSpeed ? 0 : 1;
+    // musicFon.muted = !gameSpeed;
+    stars.forEach((s) => {
+      s.speed = gameSpeed;
+    });
+    clouds.forEach((c) => {
+      c.speed = gameSpeed;
+    });
+    bg1.speed = gameSpeed;
+    bg2.speed = gameSpeed;
     if ((fps > 1) && (fps < 250 / 2)) {
       fps += 1;
       textDraw(canvas.width / 2 - 160, canvas.height / 2, "Андрей", "#FF5", "3");
