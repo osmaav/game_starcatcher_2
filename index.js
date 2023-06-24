@@ -5,7 +5,6 @@ let musicFon = new Audio("audio/fon.mp3");
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
   musicFon.muted = true;
-  musicFon.autoplay = true;
   musicFon.loop = true;
   musicFon.volume = 0.2;
 })
@@ -238,7 +237,16 @@ function boyCheckStarsCollection() {
       musicBell.currentTime = 0;
       musicBell.loop = false;
       musicBell.muted=false;
-      musicBell.play();
+      var promise = musicBell.play();
+      if (promise !== undefined) {
+        promise.then(_ => {
+          // Autoplay started!
+        }).catch(error => {
+          // Autoplay was prevented.
+          // Show a "Play" button so that user can start playback.
+        });
+      }
+      // musicBell.play();
       matrixStars[star.matrixStarsInd].empty = true; //освобождаем место
       var ind = maxColumnsStars * maxRowsStars - Math.round(Math.random() * maxRowsStars) - 1; //выбираем случайное место в крайнем правом ряду таблицы
       while (!matrixStars[ind]?.empty) {
@@ -336,7 +344,18 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
     case "KeyS": {
       //переключаем звук вкл/откл
       musicFon.muted = !musicFon.muted;
-      !musicFon.muted ? musicFon.play() : {};
+      if (!musicFon.muted) {
+        var promise = musicFon.play();
+        if (promise !== undefined) {
+          promise.then(_ => {
+            // Autoplay started!
+          }).catch(error => {
+            // Autoplay was prevented.
+            // Show a "Play" button so that user can start playback.
+          });
+      }
+      }
+      // ?musicFon.play() : { };
       break;
     }
     case "KeyP": {
