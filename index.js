@@ -4,18 +4,17 @@ let musicFon = new Audio("audio/fon.mp3");
 
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
-  musicFon.muted = false;
+  musicFon.muted = true;
   musicFon.autoplay = true;
   musicFon.loop = true;
   musicFon.volume = 0.2;
 })
 
-musicFon.addEventListener('loadmetadata', () => {
+musicBell.addEventListener('loadmetadata', () => {
   musicBell.loop = false;
   musicBell.autoplay = false;
-  musicBell.volume = 0.2;
-  musicBell.muted = true;
   musicBell.currentTime = 0;
+  musicBell.volume = 0.2;
 })
 const ctx = canvas.getContext("2d");
 //определяю полотно в размеры всего окна
@@ -236,9 +235,10 @@ function boyCheckStarsCollection() {
       boy.y < star.y + star.radius &&
       boy.y + boy.height > star.y - star.radius
     ) {
-      musicBell.muted=false;
-      musicBell.loop=false;
       musicBell.currentTime = 0;
+      musicBell.loop = false;
+      musicBell.muted=false;
+      musicBell.play();
       matrixStars[star.matrixStarsInd].empty = true; //освобождаем место
       var ind = maxColumnsStars * maxRowsStars - Math.round(Math.random() * maxRowsStars) - 1; //выбираем случайное место в крайнем правом ряду таблицы
       while (!matrixStars[ind]?.empty) {
@@ -337,6 +337,7 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
     case "KeyS": {
       //переключаем звук вкл/откл
       musicFon.muted = !musicFon.muted;
+      !musicFon.muted ? musicFon.play() : {};
       break;
     }
     case "KeyP": {
