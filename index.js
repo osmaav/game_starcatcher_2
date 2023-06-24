@@ -448,6 +448,7 @@ function animate() {
   }
 
   if (score >= 100 && score < 105) {
+    gameSpeed = 0;
     if ((fps > 1) && (fps < 300 / 2)) {
       fps += 1;
       textDraw(canvas.width / 2 - 160, canvas.height / 2, "Андрей", "#FF5", "3");
