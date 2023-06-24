@@ -309,11 +309,7 @@ function cloudsMoove() {
 }
 
 //пишу текст на экране
-/**
- * @param {number} x
- * @param {number} y
- * @param {string} text
- */
+
 function textDraw(x, y, text, color = "white", size = "1") {
   ctx.font = size + "em Arial";
   ctx.fillStyle = color;
@@ -441,29 +437,26 @@ function animate() {
   );
 
   if (!gameSpeed) {
-    if ((fps > 1) && (fps < 100 / 2)) {
+    if ((fps > 1) && (fps < 80 / 2)) {
       fps += 1;
-      textDraw(canvas.width / 2 - 160, canvas.height / 2, "ПАУЗА", "#FF5", "7");
-    } else { fps > 100 ? fps = 0 : fps += 1};
+      textDraw(canvas.width / 2 - 160, canvas.height / 2, "ПАУЗА", "#FF5", "3");
+    } else { fps > 80 ? fps = 0 : fps += 1};
   }
 
-  if (score >= 100 && score < 105) {
-    gameSpeed = 0;
-    if ((fps > 1) && (fps < 300 / 2)) {
+  if (score >= 100 && score <= 110) {
+    gameSpeed = false;
+    if ((fps > 1) && (fps < 250 / 2)) {
       fps += 1;
       textDraw(canvas.width / 2 - 160, canvas.height / 2, "Андрей", "#FF5", "3");
       textDraw(canvas.width / 2 - 170, canvas.height / 2 +45 , "Ты молодец!", "#FF5", "2");
       textDraw(canvas.width / 2 - 210, canvas.height / 2 +90, "Собрал " + "100" + " звёзд!", "#FF5", "2");
-    } else { fps > 310 ? fps = 0 : fps += 1 };
+    } else { fps > 300 ? fps = 0 : fps += 1 };
   }
   requestAnimationFrame(animate);
 }
 
 document.addEventListener("DOMContentLoaded", startup);
 
-/**
- * @param {{ stopPropagation: () => void; changedTouches: any; }} evt
- */
 function handleStart(evt) {
   evt.stopPropagation(); //перехватываем обработку событий
   var touches = evt.changedTouches;
@@ -482,9 +475,8 @@ function handleStart(evt) {
           // Autoplay was prevented.
           // Show a "Play" button so that user can start playback.
         });
-    }
-    }
-
+      }
+    };
     gameSpeed = gameSpeed ? 0 : 1;
     // musicFon.muted = !gameSpeed;
     stars.forEach((s) => {
