@@ -423,11 +423,15 @@ function animate() {
   boyCheckPosition();
   boyCheckStarsCollection();
   backgroundDraw();
-  starsDraw();
+  if (gameSpeed) {
+    starsDraw();
+    failDraw();
+  }
   boyDraw();
-  cloudsDraw();
+  if (gameSpeed) {
+    cloudsDraw();
+  }
   scoreDraw();
-  failDraw();
   textDraw(
     canvas.width - 120,
     30,
@@ -439,27 +443,25 @@ function animate() {
   if (!gameSpeed) {
     if ((fps > 1) && (fps < 80 / 2)) {
       fps += 1;
-      textDraw(canvas.width / 2 - 160, canvas.height / 2, "ПАУЗА", "#FF5", "3");
+      textDraw(canvas.width / 2 - 70, canvas.height / 2, "ПАУЗА", "#FF5", "3");
     } else { fps > 80 ? fps = 0 : fps += 1};
   }
 
-  if (score == 100) {
-    gameSpeed = gameSpeed ? 0 : 1;
-    // musicFon.muted = !gameSpeed;
-    stars.forEach((s) => {
-      s.speed = gameSpeed;
-    });
-    clouds.forEach((c) => {
-      c.speed = gameSpeed;
-    });
-    bg1.speed = gameSpeed;
-    bg2.speed = gameSpeed;
-    if ((fps > 1) && (fps < 250 / 2)) {
-      fps += 1;
-      textDraw(canvas.width / 2 - 160, 20, "Андрей", "#FF5", "3");
-      textDraw(canvas.width / 2 - 170, 65 , "Ты молодец!", "#FF5", "2");
-      textDraw(canvas.width / 2 - 210, 90, "Собрал " + "100" + " звёзд!", "#FF5", "2");
-    } else { fps > 300 ? fps = 0 : fps += 1 };
+  if (score === 100){
+    if (gameSpeed && keyCode != "KeyP" && tuchPosition != "pause") {
+      gameSpeed = 0;
+      stars.forEach((s) => {
+        s.speed = gameSpeed;
+      });
+      clouds.forEach((c) => {
+        c.speed = gameSpeed;
+      });
+      bg1.speed = gameSpeed;
+      bg2.speed = gameSpeed;
+    }
+    textDraw(canvas.width / 2 - 70, 40, "Андрей", "#FF5", "3");
+    textDraw(canvas.width / 2 - 80, 70 , "Ты молодец!", "#FF5", "2");
+    textDraw(canvas.width / 2 - 115, 100, "Собрал " + "100" + " звёзд!", "#FF5", "2");
   }
   requestAnimationFrame(animate);
 }
@@ -487,7 +489,7 @@ function handleStart(evt) {
       }
     };
     gameSpeed = gameSpeed ? 0 : 1;
-    // musicFon.muted = !gameSpeed;
+    tuchPosition = "pause";
     stars.forEach((s) => {
       s.speed = gameSpeed;
     });
