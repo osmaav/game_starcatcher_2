@@ -428,7 +428,7 @@ function animate() {
     } else { fps > 100 ? fps = 0 : fps += 1};
   }
 
-  if (score = 100 && score < 105) {
+  if (score == 100 && score < 105) {
     if ((fps > 1) && (fps < 300 / 2)) {
       fps += 1;
       textDraw(canvas.width / 2 - 160, canvas.height / 2, "Андрей", "#FF5", "3");
