@@ -1,19 +1,20 @@
 const canvas = document.getElementById("gameScreen");
-let musicBell = new Audio("audio/колокольчик.mp3");
-let musicFon = new Audio("audio/fon.mp3");
-musicFon.loop = true;
-musicFon.autoplay = true;
-musicFon.volume = 0.2;
-musicFon.muted = false;
+let musicBell = new Audio("/audio/колокольчик.mp3");
+let musicFon = new Audio("/audio/fon.mp3");
+
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
   musicFon.muted = false;
+  musicFon.autoplay = true;
+  musicFon.loop = true;
+  musicFon.volume = 0.2;
 })
-musicBell.loop = false;
-musicBell.autoplay = true;
-musicBell.volume = 0.2;
-musicBell.muted = true;
+
 musicFon.addEventListener('loadmetadata', () => {
+  musicBell.loop = false;
+  musicBell.autoplay = false;
+  musicBell.volume = 0.2;
+  musicBell.muted = true;
   musicBell.currentTime = 0;
 })
 const ctx = canvas.getContext("2d");
@@ -56,10 +57,10 @@ const cloudsCount = 5;
 const starsCount = 7;
 //задаю скорость анимации
 let gameSpeed = 1;
-const bgImgSrc = "src/img/небо.png";
-const cloudImgSrc = "src/img/облако.png";
-const boyImgSrc = "src/img/мальчик.png";
-const starImgSrc = "src/img/звездочка.png";
+const bgImgSrc = "/src/img/небо.png";
+const cloudImgSrc = "/src/img/облако.png";
+const boyImgSrc = "/src/img/мальчик.png";
+const starImgSrc = "/src/img/звездочка.png";
 let keyCode = " ";
 let score = 0;
 let fail = 0;
@@ -70,12 +71,12 @@ const bgImage = new Image();
 bgImage.src = bgImgSrc;
 let bg1 = {};
 let bg2 = {};
-  bg1.x = 0;
-  bg1.y = 0;
-  bg1.speed = gameSpeed;
-  bg2.x = canvas.width;
-  bg2.y = 0;
-  bg2.speed = gameSpeed;
+bg1.x = 0;
+bg1.y = 0;
+bg1.speed = gameSpeed;
+bg2.x = canvas.width;
+bg2.y = 0;
+bg2.speed = gameSpeed;
 //рисую Фон
 function backgroundDraw() {
   ctx.drawImage(bgImage, bg1.x, bg1.y, canvas.width, canvas.height);
@@ -149,7 +150,7 @@ function starsDraw() {
 
 /// ===== МАЛЬЧИК =====
 //создаю мальчика
-const boy = {};
+  const boy = {};
   boy.x = Math.round(canvas.width / 2) - 37;
   boy.y = 0;
   boy.width = 74;
@@ -340,7 +341,7 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
     }
     case "KeyP": {
       gameSpeed = gameSpeed ? 0 : 1;
-      musicFon.muted = !gameSpeed;
+      // musicFon.muted = !gameSpeed;
       stars.forEach((s) => {
         s.speed = gameSpeed;
       });
@@ -394,6 +395,15 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
 };
 // ===== ДВИЖОК =====
 //рисую все на экране (движок игры)
+let fps = 0;
+function outTextblink(string = "", color = "#FFF", speed = 100) {
+  let long = Math.round(speed / 2);
+  if ((fps > 1) && (fps < long)) {
+      fps += 1;
+      textDraw(canvas.width / 2 - 160, canvas.height / 2, string, color, 7);
+    } else { fps > speed ? fps = 0 : {}; };
+};
+
 function animate() {
   //очищаю экран
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -410,24 +420,26 @@ function animate() {
   cloudsDraw();
   scoreDraw();
   failDraw();
+  textDraw(
+    canvas.width - 100,
+    30,
+    "Звук: " + (musicFon.muted ? "откл." : 'вкл.'),
+    (musicFon.muted ? "#F00" : "#FFF"),
+    "1"
+  );
   // textDraw(
-  //   5,
-  //   30,
-  //   "tp:" + tuchPosition + " tuch X:" + Math.round(tuchX) + " tuch Y:" + Math.round(tuchY),
-  //   "#FFFFFF",
-  //   "24"
-  // );
-  // textDraw(
-  //   5,
+  //  canvas.width - 100,
   //   60,
-  //   "keycode " + keyCode + " boy X:" + boy.x + " boy Y:" + boy.y,
+  //   "count:" + fps ,
   //   "#FFFFFF",
-  //   "24"
+  //   "1"
   // );
-  //вывожу сообщение о том, что игра на паузе (нет движения - скорость = 0)
+  // вывожу сообщение о том, что игра на паузе (нет движения - скорость = 0)
+
   if (!gameSpeed) {
-    textDraw(canvas.width / 2 - 60, canvas.height / 2 - 30, `ПАУЗА!`, "FFF", 2);
-  }
+    fps += 1;
+    outTextblink("ПАУЗА", "#FF5", 100)
+  } else {fps = 0};
   requestAnimationFrame(animate);
 }
 
