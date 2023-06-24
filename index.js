@@ -467,6 +467,20 @@ document.addEventListener("DOMContentLoaded", startup);
 function handleStart(evt) {
   evt.stopPropagation(); //перехватываем обработку событий
   var touches = evt.changedTouches;
+  if (touches.length === 3) {
+    musicFon.muted = !musicFon.muted;
+    if (!musicFon.muted) {
+      var promise = musicFon.play();
+      if (promise !== undefined) {
+        promise.then(_ => {
+          // Autoplay started!
+        }).catch(error => {
+          // Autoplay was prevented.
+          // Show a "Play" button so that user can start playback.
+        });
+    }
+    }
+  }
   if (touches.length === 2) {
     // Обработка двойного касания
     gameSpeed = gameSpeed ? 0 : 1;
@@ -480,9 +494,9 @@ function handleStart(evt) {
     bg1.speed = gameSpeed;
     bg2.speed = gameSpeed;
   }
-  for (var i = 0; i < touches.length; i++) {
-    tuchX = touches[i].pageX;
-    tuchY = touches[i].pageY;
+  // for (var i = 0; i < touches.length; i++) {
+    tuchX = touches[0].pageX;
+    tuchY = touches[0].pageY;
     tuchPosition = "на экране";
     if (tuchX > boy.x - 15 && tuchX < boy.x + boy.width + 15) {//ткнули в границы ширины мальчика
       // tuchPosition = "над границами мальчика";
@@ -520,7 +534,7 @@ function handleStart(evt) {
         }
       } //конец ткнули правее
     } //конец не в границах мальчика
-  } //конец цикла for
+  // } //конец цикла for
 }//конец функции handleStart
 
 //запускаю игру
