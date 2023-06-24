@@ -323,11 +323,10 @@ function failDraw() {
 }
 
 function startup() {
-  var el = canvas;
-  el.addEventListener("touchstart", handleStart, false);
-  //el.addEventListener("touchend", handleEnd, false);
-  //el.addEventListener("touchcancel", handleCancel, false);
-  //el.addEventListener("touchmove", handleMove, false);
+  canvas.addEventListener("touchstart", handleStart, false);
+  //canvas.addEventListener("touchend", handleEnd, false);
+  //canvas.addEventListener("touchcancel", handleCancel, false);
+  //canvas.addEventListener("touchmove", handleMove, false);
 }
 
 //обработываю нажатия клавиш
@@ -446,9 +445,21 @@ document.addEventListener("DOMContentLoaded", startup);
  * @param {{ stopPropagation: () => void; changedTouches: any; }} evt
  */
 function handleStart(evt) {
-  // evt.preventDefault(); //передаем событие дальше
   evt.stopPropagation(); //перехватываем обработку событий
   var touches = evt.changedTouches;
+  if (touches.length === 2) {
+    // Обработка двойного касания
+    gameSpeed = gameSpeed ? 0 : 1;
+    // musicFon.muted = !gameSpeed;
+    stars.forEach((s) => {
+      s.speed = gameSpeed;
+    });
+    clouds.forEach((c) => {
+      c.speed = gameSpeed;
+    });
+    bg1.speed = gameSpeed;
+    bg2.speed = gameSpeed;
+  }
   for (var i = 0; i < touches.length; i++) {
     tuchX = touches[i].pageX;
     tuchY = touches[i].pageY;
