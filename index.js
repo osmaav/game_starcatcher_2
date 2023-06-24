@@ -314,12 +314,12 @@ function textDraw(x, y, text, color = "white", size = "1") {
 
 //вывожу на экран счет
 function scoreDraw() {
-  textDraw(5, 20, "Звезд набрал: " + score, "#0FF", "1");
+  textDraw(5, 30, "Звезд набрал: " + score, "#0FF", "2");
 }
 
 //вывожу на экран голы
 function failDraw() {
-  textDraw(5, 40, "Звезд упустил: " + fail, "#FF0", "1");
+  textDraw(5, 60, "Звезд упустил: " + fail, "#FF0", "2");
 }
 
 function startup() {
@@ -415,11 +415,11 @@ function animate() {
   scoreDraw();
   failDraw();
   textDraw(
-    canvas.width - 100,
+    canvas.width - 120,
     30,
-    "Звук: " + (musicFon.muted ? "откл." : 'вкл.'),
+    "Музыка: " + (musicFon.muted ? "откл." : 'вкл.'),
     (musicFon.muted ? "#F00" : "#FFF"),
-    "1"
+    "2"
   );
 
   if (!gameSpeed) {
