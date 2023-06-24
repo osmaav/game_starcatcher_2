@@ -468,6 +468,10 @@ function handleStart(evt) {
   evt.stopPropagation(); //перехватываем обработку событий
   var touches = evt.changedTouches;
   if (touches.length === 3) {
+    //Обработка тройного касания
+  }
+  if (touches.length === 2) {
+    // Обработка двойного касания
     musicFon.muted = !musicFon.muted;
     if (!musicFon.muted) {
       var promise = musicFon.play();
@@ -480,9 +484,7 @@ function handleStart(evt) {
         });
     }
     }
-  }
-  if (touches.length === 2) {
-    // Обработка двойного касания
+
     gameSpeed = gameSpeed ? 0 : 1;
     // musicFon.muted = !gameSpeed;
     stars.forEach((s) => {
