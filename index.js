@@ -456,9 +456,9 @@ function animate() {
     bg2.speed = gameSpeed;
     if ((fps > 1) && (fps < 250 / 2)) {
       fps += 1;
-      textDraw(canvas.width / 2 - 160, canvas.height / 2, "Андрей", "#FF5", "3");
-      textDraw(canvas.width / 2 - 170, canvas.height / 2 +45 , "Ты молодец!", "#FF5", "2");
-      textDraw(canvas.width / 2 - 210, canvas.height / 2 +90, "Собрал " + "100" + " звёзд!", "#FF5", "2");
+      textDraw(canvas.width / 2 - 160, 20, "Андрей", "#FF5", "3");
+      textDraw(canvas.width / 2 - 170, 65 , "Ты молодец!", "#FF5", "2");
+      textDraw(canvas.width / 2 - 210, 90, "Собрал " + "100" + " звёзд!", "#FF5", "2");
     } else { fps > 300 ? fps = 0 : fps += 1 };
   }
   requestAnimationFrame(animate);
