@@ -1,6 +1,6 @@
 const canvas = document.getElementById("gameScreen");
-let musicBell = new Audio("/audio/колокольчик.mp3");
-let musicFon = new Audio("/audio/fon.mp3");
+let musicBell = new Audio("audio/колокольчик.mp3");
+let musicFon = new Audio("audio/fon.mp3");
 
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
@@ -57,10 +57,10 @@ const cloudsCount = 5;
 const starsCount = 7;
 //задаю скорость анимации
 let gameSpeed = 1;
-const bgImgSrc = "/src/img/небо.png";
-const cloudImgSrc = "/src/img/облако.png";
-const boyImgSrc = "/src/img/мальчик.png";
-const starImgSrc = "/src/img/звездочка.png";
+const bgImgSrc = "src/img/небо.png";
+const cloudImgSrc = "src/img/облако.png";
+const boyImgSrc = "src/img/мальчик.png";
+const starImgSrc = "src/img/звездочка.png";
 let keyCode = " ";
 let score = 0;
 let fail = 0;
