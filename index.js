@@ -381,7 +381,7 @@ function handleStart(evt) {
         } //конец if
       }
       break;
-    case 3:
+    case 2:
     // Обработка тройного касания
       musicFon.muted = true;
       gameSpeed = gameSpeed ? 0 : 1;
@@ -395,7 +395,7 @@ function handleStart(evt) {
       bg1.speed = gameSpeed;
       bg2.speed = gameSpeed;
       break;
-    case 4:
+    case 3:
     //Обработка другого касания
       musicFon.muted = !musicFon.muted;
       if (!musicFon.muted) {
