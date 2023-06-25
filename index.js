@@ -177,9 +177,9 @@ function boyMoove() {
   } else {//мальчик в вертикальном движении
     boy.dy += boy.gravity;//увеличиваем скорость движения
     boy.y += boy.dy;//двигаем вертикально
-    boy.x += boy.dx;//двигаем горизонтально
+    if (boy.dy > 0) boy.x += boy.dx;//двигаем горизонтально
   }
-  if (((boy.dx < 0) && (boy.stratMoveX - boy.x) > 150) || ((boy.dx > 0) && (boy.x - boy.stratMoveX) > 150)) boy.dx = 0;//если продвинулся далеко
+  if (((boy.dx < 0) && (boy.stratMoveX - boy.x) >= 150) || ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= 150)) boy.dx = 0;//если продвинулся далеко
   if ((keyCode === "ArrowDown" && boy.dy)) keyCode = "";//обработали клавишу и сбрасываем состояние
   if ((tuchPosition === "под мальчиком" && boy.dy)) tuchPosition = "";//обработали нажатие и сбрасываем состояние
 }
