@@ -570,6 +570,7 @@ function animate() {
   //   "1.0"
   // );
 
+
   if (!gameSpeed) {
     if ((fps > 1) && (fps < 80 / 2)) {
       fps += 1;
