@@ -169,11 +169,13 @@ function boyDraw() {
 function boyMoove() {
   boy.dy += boy.gravity;
   boy.y += boy.dy;
-  if (boy.dx > 0) {
-    boy.dx += 1;
-  } else if (boy.dx < 0) {
-    boy.dx -= 1;
-  }
+  // if (boy.dx > 0) {
+  //   boy.dx += boy.gravity;
+  // } else if (boy.dx < 0) {
+  //   boy.dx -= boy.gravity;
+  // }
+  if (boy.dx > boy.speed + 10 || boy.dx < -boy.speed - 10) boy.dx = 0;//останавливаем движение
+  boy.x += boy.dx;//двигаем мальчика
 }
 //проверяю не вылетел ли мальчик за границы экрана
 function boyCheckPosition() {
@@ -188,8 +190,7 @@ function boyCheckPosition() {
     boy.dy = 0;
     boy.onGround = true;
   }
-  if (boy.dx > boy.speed + 10 || boy.dx < -boy.speed - 10) boy.dx = 0;//останавливаем движение
-  boy.x += boy.dx;//двигаем мальчика
+
   if (boy.x + boy.width + boy.dx > canvas.width) {//если мальчик вылетел за правую границу экрана
     boy.x = canvas.width - boy.width;
     boy.dx = 0;
