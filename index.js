@@ -204,7 +204,7 @@ function boyCheckPosition() {
 function boyCheckInClouds() {
   //если нажата клавиша вниз - не цепляемся за облако
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
-    var boyBottom = boy.y + boy.height;
+    let boyBottom = boy.y + boy.height;
     clouds.forEach((cloud) => {
       if (
         boyBottom > cloud.y &&
@@ -215,9 +215,9 @@ function boyCheckInClouds() {
       ) {
         boy.y = cloud.y - boy.height / 3;//устанавливаем в середину облака
         boy.dy = 0;//останавливаем полет
-        boy.x -= gameSpeed;//двигаем вместе с облаком
-        if (boy.x <= 0) boy.x = 0;//вылетел за границы экрана
         boy.onGround = true;//статус на земле
+        // boy.x -= gameSpeed;//двигаем вместе с облаком
+        // if (boy.x <= 0) boy.x = 0;//вылетел за границы экрана
       }
     });
   }
