@@ -15,16 +15,23 @@ musicBell.addEventListener('loadmetadata', () => {
   musicBell.currentTime = 0;
   musicBell.volume = 0.2;
 })
+// @ts-ignore
 const ctx = canvas.getContext("2d");
 //определяю полотно в размеры всего окна
+// @ts-ignore
 canvas.width = window.innerWidth;
+// @ts-ignore
 canvas.height = window.innerHeight;
 //строим таблицу мест под облака и звезды
 let matrixStars = [];
 let matrixClouds = [];
+// @ts-ignore
 const maxRowsStars = Math.round((canvas.height - 40) / 40);
+// @ts-ignore
 const maxColumnsStars = Math.round(canvas.width / 40);
+// @ts-ignore
 const maxRowsClouds = Math.round((canvas.height - 180) / 90);
+// @ts-ignore
 const maxColumnsClouds = Math.round(canvas.width / 180);
 for (let x = 1; x <= maxColumnsStars; x++) {
   for (let y = 1; y <= maxRowsStars; y++) {
@@ -72,19 +79,24 @@ let bg2 = {};
 bg1.x = 0;
 bg1.y = 0;
 bg1.speed = gameSpeed;
+// @ts-ignore
 bg2.x = canvas.width;
 bg2.y = 0;
 bg2.speed = gameSpeed;
 //рисую Фон
 function backgroundDraw() {
+  // @ts-ignore
   ctx.drawImage(bgImage, bg1.x, bg1.y, canvas.width, canvas.height);
+  // @ts-ignore
   ctx.drawImage(bgImage, bg2.x, bg2.y, canvas.width, canvas.height);
 }
 //двигаю фон
 function backgroundMoove() {
   bg1.x -= bg1.speed;
   bg2.x -= bg2.speed;
+  // @ts-ignore
   if (bg1.x < -canvas.width) bg1.x = canvas.width;
+  // @ts-ignore
   if (bg2.x < -canvas.width) bg2.x = canvas.width;
 }
 
@@ -149,6 +161,7 @@ function starsDraw() {
 /// ===== МАЛЬЧИК =====
 //создаю мальчика
 const boy = {};
+// @ts-ignore
 boy.x = Math.round(canvas.width / 2) - 37;
 boy.y = 0;
 boy.width = 74;
@@ -165,23 +178,72 @@ boy.img.src = boyImgSrc;
 //рисую Мальчика
 function boyDraw() {
   ctx.drawImage(boy.img, boy.x, boy.y, boy.width, boy.height);
+  // ctx.strokeStyle = "red";
+  // ctx.strokeRect(boy.x, boy.y, boy.width, boy.height);
 }
 //двигаю мальчика по экрану
 function boyMoove() {
+  switch (keyCode) {
+    case "ArrowLeft":
+      boy.dx = -25;
+      boy.stratMoveX = boy.x;
+      keyCode = '';
+      break;
+    case "ArrowRight":
+      boy.dx = 25;
+      boy.stratMoveX = boy.x;
+      keyCode = '';
+      break;
+    case "ArrowUp":
+      boy.dy = -25;
+      boy.stratMoveX = boy.x;
+      keyCode = '';
+      boy.onGround = false;
+      break;
+    case "Space":
+      boy.dy = -25;
+      boy.stratMoveX = boy.x;
+      keyCode = '';
+      boy.onGround = false;
+      break;
+    case "ArrowDown":
+      keyCode = '';
+      boy.onGround = false;
+      break;
+  }
   if (boy.onGround) {//мальчик на земле/на облаке
     boy.dy = 0;//останавливаем движение по вертикали
+    // @ts-ignore
     if (boy.y + boy.height < canvas.height) {//если мальчик выше земли
-      boy.x -= gameSpeed;//двигаем со скоростью игры
+      if (boy.dx != 0) {
+        boy.dx += boy.gravity;
+        boy.x += boy.dx;//двигаем горизонтально
+        clouds.forEach((cloud) => {
+          if (
+            cloud.withBoy &&
+            boy.x + Math.round(boy.width / 2) < cloud.x ||
+            boy.x + Math.round(boy.width / 2) > cloud.x + cloud.width
+          ) {
+            cloud.withBoy = false;
+            boy.onGround = false;
+          };
+        });
+      } else boy.x -= gameSpeed;//двигаем со скоростью игры
+    } else { //если мальчик на земле
+      if (boy.dx != 0) {
+        boy.dx += boy.gravity;
+        boy.x += boy.dx;//двигаем горизонтально
+      }
     }
-    boy.x += boy.dx;//двигаем горизонтально
   } else {//мальчик в вертикальном движении
     boy.dy += boy.gravity;//увеличиваем скорость движения
     boy.y += boy.dy;//двигаем вертикально
     if (boy.dy > 0) boy.x += boy.dx;//двигаем горизонтально
   }
-  if (((boy.dx < 0) && (boy.stratMoveX - boy.x) >= 150) || ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= 150)) boy.dx = 0;//если продвинулся далеко
-  if ((keyCode === "ArrowDown" && boy.dy)) keyCode = "";//обработали клавишу и сбрасываем состояние
-  if ((tuchPosition === "под мальчиком" && boy.dy)) tuchPosition = "";//обработали нажатие и сбрасываем состояние
+  if (
+    ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= boy.width/3) ||
+    ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= boy.width/3)
+  ) boy.dx = 0;//если продвинулся далеко
 }
 //проверяю не вылетел ли мальчик за границы экрана
 function boyCheckPosition() {
@@ -191,39 +253,43 @@ function boyCheckPosition() {
     boy.dy = 0;
   }
   //если мальчик вылетел за нижную границу экрана
+  // @ts-ignore
   if (boy.y + boy.height > canvas.height) {
+    // @ts-ignore
     boy.y = canvas.height - boy.height; //устанавливаем его на землю
     boy.dy = 0;
     boy.onGround = true;
   }
+  // @ts-ignore
   if (boy.x + boy.width + boy.dx > canvas.width) {//если мальчик вылетел за правую границу экрана
+    // @ts-ignore
     boy.x = canvas.width - boy.width;
     boy.dx = 0;
   }
   if (boy.x + boy.dx < 0) {//если мальчик вылетел за левую границу экрана
     boy.x = 0;
     boy.dx = 0;
-    if (boy.y + boy.height < canvas.height) { boy.onGround = false; };
+    if (boy.y + boy.height < canvas.height) boy.onGround = false;
   }
 }
 //проверяю мальчик попал ли в облако
 function boyCheckInClouds() {
   //если нажата клавиша вниз - не цепляемся за облако
-  boy.onGround = false;
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
     clouds.forEach((cloud) => {
       if (
-        boy.y + boy.height > cloud.y &&
-        boy.y < cloud.y + cloud.height &&
+        (boy.dy > 0 || boy.dx !=0) &&
         boy.x + boy.width / 2 > cloud.x &&
         boy.x + boy.width / 2 < cloud.x + cloud.width &&
-        boy.dy > 0
+        boy.y + boy.height > cloud.y + Math.round(boy.height / 2) &&
+        boy.y + boy.height < cloud.y + Math.round(boy.height / 2) + boy.dy + 2
       ) {
-        boy.y = cloud.y - Math.round(boy.height / 3);//устанавливаем в облако
-        boy.onGround = true;//статус на земле
+        boy.onGround = true;
+        cloud.withBoy = true;
       }
     });
   }
+
 }
 //проверяю собрал ли мальчик звезду
 function boyCheckStarsCollection() {
@@ -240,6 +306,7 @@ function boyCheckStarsCollection() {
       musicBell.loop = false;
       musicBell.muted=false;
       var promise = musicBell.play();
+      // @ts-ignore
       if (promise !== undefined) { promise.then(_ => { }).catch(error => { }); };
       // musicBell.play();
       matrixStars[star.matrixStarsInd].empty = true; //освобождаем место
@@ -273,6 +340,7 @@ var clouds = [];
       height: 90,
       width: 180,
       speed: gameSpeed,
+      withBoy: false,
       img: new Image(),
       matrixCloudsInd: ind
     });
@@ -282,6 +350,9 @@ var clouds = [];
 function cloudsDraw() {
   clouds.forEach(function (c) {
     ctx.drawImage(c.img, c.x, c.y, c.width, c.height);
+    // ctx.strokeStyle = "blue";
+    // ctx.strokeRect(c.x, c.y, c.width, c.height);
+    // textDraw(c.x, c.y + 20, "boy: "+ c.withBoy);
   });
 }
 //двигаю облака
@@ -290,6 +361,7 @@ function cloudsMoove() {
     c.x -= c.speed;
     if (c.x + c.width < 0) {
       matrixClouds[c.matrixCloudsInd].empty = true; //освобождаем место в таблице
+      c.withBoy = false;
       var ind = maxColumnsClouds * maxRowsClouds - maxColumnsClouds - 1;
       while (!matrixClouds[ind]?.empty) {
         //пока место не свободно
@@ -342,6 +414,7 @@ function handleStart(evt) {
           // else boy.dy = -boy.speed;
         } else { //под мальчиком
           tuchPosition = "под мальчиком";
+          // @ts-ignore
           if (boy.onGround && boy.y + boy.height < canvas.height) {
             boy.onGround = false;
           }
@@ -364,8 +437,10 @@ function handleStart(evt) {
             };
           };
         } else if (tuchX > boy.x + boy.width) {//ткнули правее
+          // @ts-ignore
           if (boy.x + boy.width + boy.dx > canvas.width) {//за границами экрана
             boy.dx = 0;
+            // @ts-ignore
             boy.x = canvas.width - boy.width;
           } else {//двигаем вправо
             boy.dx = boy.speed;
@@ -400,6 +475,7 @@ function handleStart(evt) {
       musicFon.muted = !musicFon.muted;
       if (!musicFon.muted) {
           var promise = musicFon.play();
+        // @ts-ignore
         if (promise !== undefined) { promise.then(_ => { }).catch(error => { }); };
       };
       break;
@@ -407,13 +483,14 @@ function handleStart(evt) {
 }//конец функции handleStart
 
 function startup() {
+  // @ts-ignore
   canvas.addEventListener("touchstart", handleStart, false);
 }
 
 //обработываю нажатия клавиш
 window.onkeydown = (/** @type {{ code: string; }} */ e) => {
   keyCode = e.code;
-  switch (e.code) {
+  switch (keyCode) {
     case "KeyS": {
       //переключаем звук вкл/откл
       musicFon.muted = !musicFon.muted;
@@ -422,6 +499,7 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
         if (promise !== undefined) {
           promise.then(_ => {
             // Autoplay started!
+          // @ts-ignore
           }).catch(error => {
             // Autoplay was prevented.
             // Show a "Play" button so that user can start playback.
@@ -444,47 +522,7 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
       bg2.speed = gameSpeed;
       break;
     }
-    case "ArrowLeft": {
-      if (boy.x + boy.dx < 0) {
-        boy.dx = 0;
-        boy.x = 0;
-      } else {
-        boy.dx = -boy.speed;
-        boy.stratMoveX = boy.x;
-      }
-      break;
-    }
-    case "ArrowRight": {
-      if (boy.x + boy.width + boy.dx > canvas.width) {
-        boy.dx = 0;
-        boy.x = canvas.width - boy.width;
-      } else {
-        boy.dx = boy.speed;
-        boy.stratMoveX = boy.x;
-      }
-      break;
-    }
-    case "ArrowDown": {
-      if (boy.onGround && boy.y + boy.height < canvas.height) {
-        boy.onGround = false;
-      }
-      boy.dy = boy.speed;
-      break;
-    }
-    case "ArrowUp": {
-      if (boy.onGround) {
-        boy.dy = -25;
-        boy.onGround = false;
-      }
-      break;
-    }
-    case "Space": {
-      if (boy.onGround) {
-        boy.dy = -25;
-        boy.onGround = false;
-      }
-      break;
-    }
+
   }
 };
 // ===== ДВИЖОК =====
@@ -493,13 +531,16 @@ let fps = 0;
 
 function animate() {
   //очищаю экран
+  // @ts-ignore
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   backgroundMoove();
   starsMoove();
   cloudsMoove();
+
   boyMoove();
-  boyCheckInClouds();
   boyCheckPosition();
+  boyCheckInClouds();
+
   boyCheckStarsCollection();
   backgroundDraw();
   if (gameSpeed) {
@@ -512,16 +553,26 @@ function animate() {
   }
   scoreDraw();
   textDraw(
+    // @ts-ignore
     canvas.width - 120,
     30,
     "Музыка: " + (musicFon.muted ? "откл." : 'вкл.'),
     (musicFon.muted ? "#F00" : "#FFF"),
     "1.0"
   );
+  textDraw(
+    // @ts-ignore
+    canvas.width/2,
+    30,
+    "Boy.onGround: " + boy.onGround + " Key: " + keyCode,
+    "#FFF",
+    "1.0"
+  );
 
   if (!gameSpeed) {
     if ((fps > 1) && (fps < 80 / 2)) {
       fps += 1;
+      // @ts-ignore
       textDraw(canvas.width / 2 - 70, canvas.height / 2, "ПАУЗА", "#FF5", "3");
     } else { fps > 80 ? fps = 0 : fps += 1};
   }
@@ -538,8 +589,11 @@ function animate() {
       bg1.speed = gameSpeed;
       bg2.speed = gameSpeed;
     }
+    // @ts-ignore
     textDraw(canvas.width / 2 - 70, 40, "Андрей", "#FF5", "3");
+    // @ts-ignore
     textDraw(canvas.width / 2 - 80, 70 , "Ты молодец!", "#FF5", "2");
+    // @ts-ignore
     textDraw(canvas.width / 2 - 115, 100, "Собрал " + "100" + " звёзд!", "#FF5", "2");
   }
   requestAnimationFrame(animate);
