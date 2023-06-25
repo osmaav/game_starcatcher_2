@@ -52,9 +52,9 @@ let tuchPosition = '';
 //задаю количество облаков на экране
 const cloudsCount = 5;
 //задаю количество звезд на экране
-const starsCount = 7;
+const starsCount = 9;
 //задаю скорость анимации
-let gameSpeed = 0;
+let gameSpeed = 1;
 const bgImgSrc = "src/img/небо.png";
 const cloudImgSrc = "src/img/облако.png";
 const boyImgSrc = "src/img/мальчик.png";
