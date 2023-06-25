@@ -174,7 +174,7 @@ function boyMoove() {
   // } else if (boy.dx < 0) {
   //   boy.dx -= boy.gravity;
   // }
-  if (boy.dx > boy.speed + 5 || boy.dx < -boy.speed - 5) boy.dx = 0;//останавливаем движение
+  if (boy.dx > 5 || boy.dx < 5) boy.dx = 0;//останавливаем движение
   if (!boy.dy || boy.dy <0) boy.x += boy.dx;//двигаем мальчика
 }
 //проверяю не вылетел ли мальчик за границы экрана
