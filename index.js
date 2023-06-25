@@ -370,23 +370,23 @@ function handleStart(evt) {
             boy.dx = boy.speed;
           }
         } //конец ткнули правее
-        break;
       }
+      break;
     case 2:
     // Обработка двойного касания
-        musicFon.muted = true;
-        gameSpeed = gameSpeed ? 0 : 1;
-        tuchPosition = "pause";
-        stars.forEach((s) => {
-          s.speed = gameSpeed;
-        });
-        clouds.forEach((c) => {
-          c.speed = gameSpeed;
-        });
-        bg1.speed = gameSpeed;
-        bg2.speed = gameSpeed;
+      musicFon.muted = true;
+      gameSpeed = gameSpeed ? 0 : 1;
+      tuchPosition = "pause";
+      stars.forEach((s) => {
+        s.speed = gameSpeed;
+      });
+      clouds.forEach((c) => {
+        c.speed = gameSpeed;
+      });
+      bg1.speed = gameSpeed;
+      bg2.speed = gameSpeed;
       break;
-    default:
+    case 3:
     //Обработка тройного касания
       musicFon.muted = !musicFon.muted;
       if (!musicFon.muted) {
