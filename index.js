@@ -406,11 +406,11 @@ function handleStart(evt) {
       if (tuchX > boy.x - 15 && tuchX < boy.x + boy.width + 15) {
         //ткнули в границах ширины мальчика
         if (tuchY < boy.y + boy.height) {//над мальчиком
-          if (boy.onGround) {
+          // if (boy.onGround) {
             //мальчик на земле/облаке
             boy.onGround = false; //
             boy.dy = -25; //прыгаем вверх
-          }
+          // }
           // else boy.dy = -boy.speed;
         } else { //под мальчиком
           tuchPosition = "под мальчиком";
@@ -560,14 +560,15 @@ function animate() {
     (musicFon.muted ? "#F00" : "#FFF"),
     "1.0"
   );
-  textDraw(
-    // @ts-ignore
-    canvas.width/2,
-    30,
-    "Boy.onGround: " + boy.onGround + " Key: " + keyCode,
-    "#FFF",
-    "1.0"
-  );
+  //для отлакдки
+  // textDraw(
+  //   // @ts-ignore
+  //   canvas.width/2,
+  //   30,
+  //   "Boy.onGround: " + boy.onGround + " Key: " + keyCode,
+  //   "#FFF",
+  //   "1.0"
+  // );
 
   if (!gameSpeed) {
     if ((fps > 1) && (fps < 80 / 2)) {
