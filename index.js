@@ -241,8 +241,8 @@ function boyMoove() {
     if (boy.dy != 0) boy.x += boy.dx;//двигаем горизонтально
   }
   if (
-    ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= boy.width) ||
-    ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= boy.width)
+    ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= 3*boy.width) ||
+    ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= 3*boy.width)
   ) boy.dx = 0;//если продвинулся далеко
 }
 //проверяю не вылетел ли мальчик за границы экрана
