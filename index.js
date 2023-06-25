@@ -54,7 +54,7 @@ const cloudsCount = 5;
 //задаю количество звезд на экране
 const starsCount = 7;
 //задаю скорость анимации
-let gameSpeed = 1;
+let gameSpeed = 0;
 const bgImgSrc = "src/img/небо.png";
 const cloudImgSrc = "src/img/облако.png";
 const boyImgSrc = "src/img/мальчик.png";
@@ -168,12 +168,18 @@ function boyDraw() {
 }
 //двигаю мальчика по экрану
 function boyMoove() {
-  boy.dy += boy.gravity;
-  boy.y += boy.dy;
-  // boy.x += boy.dx;
-  // if (boy.dx > 5 || boy.dx < 5) boy.dx = 0;//останавливаем движение
-  if ((boy.dx < 0) && (boy.x - boy.stratMoveX) > 50) boy.dx = 0;
-  if (boy.dy <= 0) boy.x += boy.dx;//двигаем мальчика
+  if (boy.onGround) {//мальчик на земле/на облаке
+    boy.dy = 0;//останавливаем движение по вертикали
+    if (boy.y + boy.height < canvas.height) {//если мальчик выше земли
+      boy.x -= gameSpeed;//двигаем со скоростью игры
+    }
+    boy.x += boy.dx;//двигаем горизонтально
+  } else {//мальчик в вертикальном движении
+    boy.dy += boy.gravity;//увеличиваем скорость движения
+    boy.y += boy.dy;//двигаем вертикально
+    boy.x += boy.dx;//двигаем горизонтально
+  }
+  if (((boy.dx < 0) && (boy.stratMoveX - boy.x) > 150)||((boy.dx > 0) && (boy.x - boy.stratMoveX) > 150) )boy.dx = 0;//если продвинулся далеко
 }
 //проверяю не вылетел ли мальчик за границы экрана
 function boyCheckPosition() {
@@ -188,7 +194,6 @@ function boyCheckPosition() {
     boy.dy = 0;
     boy.onGround = true;
   }
-
   if (boy.x + boy.width + boy.dx > canvas.width) {//если мальчик вылетел за правую границу экрана
     boy.x = canvas.width - boy.width;
     boy.dx = 0;
@@ -196,6 +201,7 @@ function boyCheckPosition() {
   if (boy.x + boy.dx < 0) {//если мальчик вылетел за левую границу экрана
     boy.x = 0;
     boy.dx = 0;
+    if (boy.y + boy.height < canvas.height) { boy.onGround = false; };
   }
   if ((keyCode == "ArrowDown" && boy.dy)) keyCode = "";//обработали клавишу и сбрасываем состояние
   if ((tuchPosition == "под мальчиком" && boy.dy)) tuchPosition = "";//обработали нажатие и сбрасываем состояние
@@ -204,20 +210,16 @@ function boyCheckPosition() {
 function boyCheckInClouds() {
   //если нажата клавиша вниз - не цепляемся за облако
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
-    let boyBottom = boy.y + boy.height;
     clouds.forEach((cloud) => {
       if (
-        boyBottom > cloud.y &&
-        boyBottom < cloud.y + cloud.height &&
+        boy.y + boy.height > cloud.y &&
+        boy.y < cloud.y + cloud.height &&
         boy.x + boy.width / 2 > cloud.x &&
         boy.x + boy.width / 2 < cloud.x + cloud.width &&
         boy.dy > 0
       ) {
-        boy.y = cloud.y - boy.height / 3;//устанавливаем в середину облака
-        boy.dy = 0;//останавливаем полет
+        boy.y = cloud.y - Math.round(boy.height / 3);//устанавливаем в облако
         boy.onGround = true;//статус на земле
-        // boy.x -= gameSpeed;//двигаем вместе с облаком
-        // if (boy.x <= 0) boy.x = 0;//вылетел за границы экрана
       }
     });
   }
@@ -333,14 +335,15 @@ function handleStart(evt) {
           if (boy.onGround) {
             //мальчик на земле/облаке
             boy.onGround = false; //
-            boy.dy = -25; //прыгаем
-          } else boy.dy = -boy.speed; //двигаемся влево со скоростью игры
-        } else { //не выше
+            boy.dy = -25; //прыгаем вверх
+          }
+          // else boy.dy = -boy.speed;
+        } else { //под мальчиком
           tuchPosition = "под мальчиком";
           if (boy.onGround && boy.y + boy.height < canvas.height) {
             boy.onGround = false;
           }
-          boy.dy = boy.speed;
+          // boy.dy = boy.speed;//падаем
         } //конец не выше
       } else {//не в границах мальчика
         if (tuchX < boy.x) {//ткнули левее
@@ -446,6 +449,7 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
         boy.x = 0;
       } else {
         boy.dx = -boy.speed;
+        boy.stratMoveX = boy.x;
       }
       break;
     }
@@ -455,6 +459,7 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
         boy.x = canvas.width - boy.width;
       } else {
         boy.dx = boy.speed;
+        boy.stratMoveX = boy.x;
       }
       break;
     }
@@ -469,14 +474,14 @@ window.onkeydown = (/** @type {{ code: string; }} */ e) => {
       if (boy.onGround) {
         boy.dy = -25;
         boy.onGround = false;
-      } else boy.dy = -boy.speed;
+      }
       break;
     }
     case "Space": {
       if (boy.onGround) {
         boy.dy = -25;
         boy.onGround = false;
-      } else boy.dy = -boy.speed;
+      }
       break;
     }
   }
