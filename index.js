@@ -209,6 +209,7 @@ function boyCheckPosition() {
 //проверяю мальчик попал ли в облако
 function boyCheckInClouds() {
   //если нажата клавиша вниз - не цепляемся за облако
+  boy.onGround = false;
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
     clouds.forEach((cloud) => {
       if (
