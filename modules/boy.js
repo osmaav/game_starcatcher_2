@@ -1,5 +1,4 @@
-// name: "boy";
-type: "module";
+// type: "module";
 //создаю мальчика
  function boyInit() {
   let boy = {
