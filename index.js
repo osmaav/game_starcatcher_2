@@ -1,7 +1,9 @@
 const canvas = document.getElementById("gameScreen");
 let soundBell = new Audio("./audio/колокольчик.mp3");
 let musicFon = new Audio("./audio/fon.mp3");
-import {boyInit as boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection} from "./modules/boy.js";
+import { boyInit as boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection } from "./modules/boy.js";
+// const boyInit = require("./modules/boy.js");
+// const boy = boyInit;
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
   musicFon.muted = true;

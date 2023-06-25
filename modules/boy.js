@@ -1,6 +1,7 @@
-name: "boy";
+// name: "boy";
+type: "module";
 //создаю мальчика
-export function boyInit() {
+ function boyInit() {
   let boy = {
     x : 0,
     y : 0,
@@ -16,16 +17,16 @@ export function boyInit() {
   };
   boy.img.src = "./src/img/мальчик.png";
   return boy;
-}
+};
 
 //рисую Мальчика
-export function boyDraw(boy, ctx) {
+ function boyDraw(boy, ctx) {
   ctx.drawImage(boy.img, boy.x, boy.y, boy.width, boy.height);
   // ctx.strokeStyle = "red";
   // ctx.strokeRect(boy.x, boy.y, boy.width, boy.height);
-}
+};
 //двигаю мальчика по экрану
-export function boyMoove(boy, keyCode) {
+ function boyMoove(boy, keyCode) {
   switch (keyCode) {
     case "ArrowLeft":
       boy.dx = -25;
@@ -87,9 +88,9 @@ export function boyMoove(boy, keyCode) {
     ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= 3*boy.width) ||
     ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= 3*boy.width)
   ) boy.dx = 0;//если продвинулся далеко
-}
+};
 //проверяю не вылетел ли мальчик за границы экрана
-export function boyCheckPosition(boy,canvas) {
+ function boyCheckPosition(boy,canvas) {
   //если мальчик вылетел за верхную границу экрана
   if (boy.y + boy.dy < 0) {
     boy.y = 0;
@@ -114,9 +115,9 @@ export function boyCheckPosition(boy,canvas) {
     boy.dx = 0;
     if (boy.y + boy.height < canvas.height) boy.onGround = false;
   }
-}
+};
 //проверяю мальчик попал ли в облако
-export function boyCheckInClouds(boy, keyCode, tuchPosition, clouds) {
+ function boyCheckInClouds(boy, keyCode, tuchPosition, clouds) {
   //если нажата клавиша вниз - не цепляемся за облако
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
     clouds.forEach((cloud) => {
@@ -133,9 +134,9 @@ export function boyCheckInClouds(boy, keyCode, tuchPosition, clouds) {
     });
   }
 
-}
+};
 //проверяю собрал ли мальчик звезду
-export function boyCheckStarsCollection(boy, stars, arrStars, sound, maxColumnsStars, maxRowsStars, score) {
+ function boyCheckStarsCollection(boy, stars, arrStars, sound, maxColumnsStars, maxRowsStars, score) {
   stars.forEach(function (star) {
     if (
       !star.dy &&
@@ -165,4 +166,6 @@ export function boyCheckStarsCollection(boy, stars, arrStars, sound, maxColumnsS
       score += 1;
     }
   });
-}
+};
+
+export { boyInit, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection };
