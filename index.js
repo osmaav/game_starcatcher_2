@@ -188,18 +188,18 @@ function boyCheckPosition() {
     boy.dy = 0;
     boy.onGround = true;
   }
-  if (boy.dx > boy.speed + 3 || boy.dx < -boy.speed - 3) boy.dx = 0;
-  boy.x += boy.dx;
-  if (boy.x + boy.width + boy.dx > canvas.width) {
+  if (boy.dx > boy.speed + 3 || boy.dx < -boy.speed - 3) boy.dx = 0;//останавливаем движение
+  boy.x += boy.dx;//двигаем мальчика
+  if (boy.x + boy.width + boy.dx > canvas.width) {//если мальчик вылетел за правую границу экрана
     boy.x = canvas.width - boy.width;
     boy.dx = 0;
   }
-  if (boy.x + boy.dx < 0) {
+  if (boy.x + boy.dx < 0) {//если мальчик вылетел за левую границу экрана
     boy.x = 0;
     boy.dx = 0;
   }
-  if ((keyCode == "ArrowDown" && boy.dy)) keyCode = "";
-  if ((tuchPosition == "под мальчиком" && boy.dy)) tuchPosition = "";
+  if ((keyCode == "ArrowDown" && boy.dy)) keyCode = "";//обработали клавишу и сбрасываем состояние
+  if ((tuchPosition == "под мальчиком" && boy.dy)) tuchPosition = "";//обработали нажатие и сбрасываем состояние
 }
 //проверяю мальчик попал ли в облако
 function boyCheckInClouds() {
@@ -214,11 +214,11 @@ function boyCheckInClouds() {
         boy.x + boy.width / 2 < cloud.x + cloud.width &&
         boy.dy > 0
       ) {
-        boy.y = cloud.y - boy.height / 3;
-        boy.dy = 0;
-        boy.x -= gameSpeed;
-        if (boy.x <= 0) boy.x = 0;
-        boy.onGround = true;
+        boy.y = cloud.y - boy.height / 3;//устанавливаем в середину облака
+        boy.dy = 0;//останавливаем полет
+        boy.x -= gameSpeed;//двигаем вместе с облаком
+        if (boy.x <= 0) boy.x = 0;//вылетел за границы экрана
+        boy.onGround = true;//статус на земле
       }
     });
   }
