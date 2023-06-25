@@ -155,8 +155,8 @@ function starsDraw() {
   boy.height = 90;
   boy.speed = 15;
   boy.dx = 0;
-  boy.dy = 0; // This is the vertical velocity of the boy
-  boy.gravity = 1; // This is the constant force pulling the boy down
+  boy.dy = 0;
+  boy.gravity = 1;
   boy.onGround = false;
   boy.img = new Image();
   boy.img.src = boyImgSrc;
