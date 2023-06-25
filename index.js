@@ -188,7 +188,7 @@ function boyCheckPosition() {
     boy.dy = 0;
     boy.onGround = true;
   }
-  if (boy.dx > boy.speed + 3 || boy.dx < -boy.speed - 3) boy.dx = 0;//останавливаем движение
+  if (boy.dx > boy.speed + 10 || boy.dx < -boy.speed - 10) boy.dx = 0;//останавливаем движение
   boy.x += boy.dx;//двигаем мальчика
   if (boy.x + boy.width + boy.dx > canvas.width) {//если мальчик вылетел за правую границу экрана
     boy.x = canvas.width - boy.width;
@@ -330,9 +330,9 @@ function handleStart(evt) {
       tuchPosition = "на экране";
       if (tuchX > boy.x - 15 && tuchX < boy.x + boy.width + 15) {
         //ткнули в границах ширины мальчика
-        tuchPosition = "над границами мальчика";
+        // tuchPosition = "над границами мальчика";
         if (tuchY < boy.y + boy.height) {//над мальчиком
-          tuchPosition = "над мальчиком";
+          // tuchPosition = "над мальчиком";
           // keyCode = "ArrowUp";
           if (boy.onGround) {
             //мальчик на земле/облаке
@@ -353,8 +353,8 @@ function handleStart(evt) {
             boy.x = 0;
           } else {//двигаем влево
             boy.dx = -boy.speed;
-            if (tuchY < boy.y + boy.height) {//над мальчиком
-              tuchPosition = "над мальчиком слева";
+            if (tuchY < boy.y) {//над мальчиком
+              // tuchPosition = "над мальчиком слева";
               if (boy.onGround) {
                 //мальчик на земле/облаке
                 boy.onGround = false; //в воздухе
@@ -368,8 +368,8 @@ function handleStart(evt) {
             boy.x = canvas.width - boy.width;
           } else {//двигаем вправо
             boy.dx = boy.speed;
-            if (tuchY < boy.y + boy.height) {//над мальчиком
-              tuchPosition = "над мальчиком справа";
+            if (tuchY < boy.y) {//над мальчиком
+              // tuchPosition = "над мальчиком справа";
               if (boy.onGround) {
                 //мальчик на земле/облаке
                 boy.onGround = false; //в воздухе
