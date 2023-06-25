@@ -323,7 +323,8 @@ function failDraw() {
 
 
 function handleStart(evt) {
-  evt.stopPropagation(); //перехватываем обработку событий
+  // evt.stopPropagation(); //перехватываем обработку событий
+  evt.preventDefault();
   switch (evt.changedTouches.length) {
     case 1:
       // Обработка одинарного касания
