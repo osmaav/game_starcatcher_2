@@ -238,11 +238,11 @@ function boyMoove() {
   } else {//мальчик в вертикальном движении
     boy.dy += boy.gravity;//увеличиваем скорость движения
     boy.y += boy.dy;//двигаем вертикально
-    if (boy.dy > 0) boy.x += boy.dx;//двигаем горизонтально
+    if (boy.dy != 0) boy.x += boy.dx;//двигаем горизонтально
   }
   if (
-    ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= boy.width/3) ||
-    ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= boy.width/3)
+    ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= boy.width) ||
+    ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= boy.width)
   ) boy.dx = 0;//если продвинулся далеко
 }
 //проверяю не вылетел ли мальчик за границы экрана
