@@ -393,8 +393,7 @@ function failDraw() {
   textDraw(5, 60, "Звезд упустил: " + fail, "#FF0", "1.1");
 }
 
-
-function handleStart(evt) {
+function handleTuch(evt) {
   // evt.stopPropagation(); //перехватываем обработку событий
   evt.preventDefault();
   switch (evt.changedTouches.length) {
@@ -480,11 +479,11 @@ function handleStart(evt) {
       };
       break;
   }//конец switch
-}//конец функции handleStart
+}//конец функции handleTuch
 
 function startup() {
   // @ts-ignore
-  canvas.addEventListener("touchstart", handleStart, false);
+  canvas.addEventListener("touchstart", handleTuch, false);
 }
 
 //обработываю нажатия клавиш
