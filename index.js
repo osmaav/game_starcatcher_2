@@ -417,7 +417,7 @@ function handleTuch(evt) {
           if (boy.onGround && boy.y + boy.height < canvas.height) {
             boy.onGround = false;
           }
-          boy.dy = boy.speed;//падаем
+          // boy.dy = boy.speed;//падаем
         } //конец не выше
       } else {//не в границах мальчика
         if (tuchX < boy.x) {//ткнули левее
