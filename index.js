@@ -148,18 +148,19 @@ function starsDraw() {
 
 /// ===== МАЛЬЧИК =====
 //создаю мальчика
-  const boy = {};
-  boy.x = Math.round(canvas.width / 2) - 37;
-  boy.y = 0;
-  boy.width = 74;
-  boy.height = 90;
-  boy.speed = 15;
-  boy.dx = 0;
-  boy.dy = 0;
-  boy.gravity = 1;
-  boy.onGround = false;
-  boy.img = new Image();
-  boy.img.src = boyImgSrc;
+const boy = {};
+boy.x = Math.round(canvas.width / 2) - 37;
+boy.y = 0;
+boy.width = 74;
+boy.height = 90;
+boy.speed = 15;
+boy.dx = 0;
+boy.dy = 0;
+boy.gravity = 1;
+boy.stratMoveX = 0;
+boy.onGround = false;
+boy.img = new Image();
+boy.img.src = boyImgSrc;
 // }
 //рисую Мальчика
 function boyDraw() {
@@ -169,12 +170,8 @@ function boyDraw() {
 function boyMoove() {
   boy.dy += boy.gravity;
   boy.y += boy.dy;
-  // if (boy.dx > 0) {
-  //   boy.dx += boy.gravity;
-  // } else if (boy.dx < 0) {
-  //   boy.dx -= boy.gravity;
-  // }
-  if (boy.dx > 5 || boy.dx < 5) boy.dx = 0;//останавливаем движение
+  // if (boy.dx > 5 || boy.dx < 5) boy.dx = 0;//останавливаем движение
+  if (boy.dx < 0 && (boy.x - boy.stratMoveX) > 50) boy.dx = 0;
   if (!boy.dy || boy.dy <0) boy.x += boy.dx;//двигаем мальчика
 }
 //проверяю не вылетел ли мальчик за границы экрана
@@ -331,10 +328,7 @@ function handleStart(evt) {
       tuchPosition = "на экране";
       if (tuchX > boy.x - 15 && tuchX < boy.x + boy.width + 15) {
         //ткнули в границах ширины мальчика
-        // tuchPosition = "над границами мальчика";
         if (tuchY < boy.y + boy.height) {//над мальчиком
-          // tuchPosition = "над мальчиком";
-          // keyCode = "ArrowUp";
           if (boy.onGround) {
             //мальчик на земле/облаке
             boy.onGround = false; //
@@ -354,6 +348,7 @@ function handleStart(evt) {
             boy.x = 0;
           } else {//двигаем влево
             boy.dx = -boy.speed;
+            boy.stratMoveX = boy.x;
             if (tuchY < boy.y) {//над мальчиком
               // tuchPosition = "над мальчиком слева";
               if (boy.onGround) {
