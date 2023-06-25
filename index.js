@@ -354,7 +354,6 @@ function handleStart(evt) {
             boy.dx = -boy.speed;
             boy.stratMoveX = boy.x;
             if (tuchY < boy.y) {//над мальчиком
-              // tuchPosition = "над мальчиком слева";
               if (boy.onGround) {
                 //мальчик на земле/облаке
                 boy.onGround = false; //в воздухе
@@ -368,8 +367,8 @@ function handleStart(evt) {
             boy.x = canvas.width - boy.width;
           } else {//двигаем вправо
             boy.dx = boy.speed;
+            boy.stratMoveX = boy.x;
             if (tuchY < boy.y) {//над мальчиком
-              // tuchPosition = "над мальчиком справа";
               if (boy.onGround) {
                 //мальчик на земле/облаке
                 boy.onGround = false; //в воздухе
