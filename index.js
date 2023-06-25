@@ -170,9 +170,10 @@ function boyDraw() {
 function boyMoove() {
   boy.dy += boy.gravity;
   boy.y += boy.dy;
+  // boy.x += boy.dx;
   // if (boy.dx > 5 || boy.dx < 5) boy.dx = 0;//останавливаем движение
   if ((boy.dx < 0) && (boy.x - boy.stratMoveX) > 50) boy.dx = 0;
-  if (!boy.dy || boy.dy <0) boy.x += boy.dx;//двигаем мальчика
+  if (boy.dy <= 0) boy.x += boy.dx;//двигаем мальчика
 }
 //проверяю не вылетел ли мальчик за границы экрана
 function boyCheckPosition() {
