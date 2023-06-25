@@ -1,31 +1,31 @@
-// type: "module";
+//boy.js
 //создаю мальчика
+  let boy= {}
  function boyInit() {
-  let boy = {
-    x : 0,
-    y : 0,
-    width : 74,
-    height : 90,
-    speed : 15,
-    dx : 0,
-    dy : 0,
-    gravity : 1,
-    stratMoveX : 0,
-    onGround : false,
-    img : new Image(),
-  };
+  boy.x = 0;
+  boy.y = 0;
+  boy.width = 74;
+  boy.height= 90;
+  boy.speed=15;
+  boy.dx= 0;
+  boy.dy= 0;
+  boy.gravity= 1;
+  boy.stratMoveX= 0;
+  boy.onGround= false;
+  boy.img= new Image();
   boy.img.src = "./src/img/мальчик.png";
   return boy;
 };
+boyInit();
 
 //рисую Мальчика
- function boyDraw(boy, ctx) {
+function boyDraw(boy = {}, ctx) {
   ctx.drawImage(boy.img, boy.x, boy.y, boy.width, boy.height);
   // ctx.strokeStyle = "red";
   // ctx.strokeRect(boy.x, boy.y, boy.width, boy.height);
 };
 //двигаю мальчика по экрану
- function boyMoove(boy, keyCode) {
+function boyMoove(boy = {}, keyCode = "", canvas, clouds = {}, gameSpeed=0) {
   switch (keyCode) {
     case "ArrowLeft":
       boy.dx = -25;
@@ -89,7 +89,7 @@
   ) boy.dx = 0;//если продвинулся далеко
 };
 //проверяю не вылетел ли мальчик за границы экрана
- function boyCheckPosition(boy,canvas) {
+function boyCheckPosition(boy = {},canvas) {
   //если мальчик вылетел за верхную границу экрана
   if (boy.y + boy.dy < 0) {
     boy.y = 0;
@@ -116,7 +116,7 @@
   }
 };
 //проверяю мальчик попал ли в облако
- function boyCheckInClouds(boy, keyCode, tuchPosition, clouds) {
+function boyCheckInClouds(boy = {}, keyCode="", tuchPosition="", clouds={}) {
   //если нажата клавиша вниз - не цепляемся за облако
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
     clouds.forEach((cloud) => {
@@ -135,7 +135,7 @@
 
 };
 //проверяю собрал ли мальчик звезду
- function boyCheckStarsCollection(boy, stars, arrStars, sound, maxColumnsStars, maxRowsStars, score) {
+function boyCheckStarsCollection(boy = {}, stars = {}, arrStars=[], sound, maxColumnsStars =0, maxRowsStars=0, score=0) {
   stars.forEach(function (star) {
     if (
       !star.dy &&
@@ -167,4 +167,4 @@
   });
 };
 
-export { boyInit, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection };
+export { boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection };
