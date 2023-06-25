@@ -326,11 +326,82 @@ function failDraw() {
   textDraw(5, 60, "Звезд упустил: " + fail, "#FF0", "1.1");
 }
 
+
+function handleStart(evt) {
+  evt.stopPropagation(); //перехватываем обработку событий
+  switch (evt.changedTouches.length) {
+    case 1:
+      // Обработка одинарного касания
+      tuchX = evt.changedTouches[0].pageX;
+      tuchY = evt.changedTouches[0].pageY;
+      tuchPosition = "на экране";
+      if (tuchX > boy.x - 15 && tuchX < boy.x + boy.width + 15) {//ткнули в границы ширины мальчика
+        // tuchPosition = "над границами мальчика";
+        if (tuchY < boy.y + boy.height) {//точно в мальчика
+          // tuchPosition = "над мальчиком";
+          keyCode = "ArrowUp";
+          if (boy.onGround) {
+            //мальчик на земле/облаке
+            boy.dy = -25; //прыгаем
+            boy.onGround = false; //
+          } else boy.dy = -boy.speed; //двигаемся влево со скоростью игры
+        } else { //не выше
+          tuchPosition = "под мальчиком";
+          keyCode = "ArrowDown";
+          if (boy.onGround && boy.y + boy.height < canvas.height) {
+            boy.onGround = false;
+          }
+          boy.dy = boy.speed;
+        } //конец не выше
+      } else {//не в границах мальчика
+        if (tuchX < boy.x) {//ткнули левее
+          if (boy.x + boy.dx < 0) {
+            boy.dx = 0;
+            boy.x = 0;
+          } else {
+            boy.dx = -boy.speed;
+          }
+        } //конец ткнули левее
+        if (tuchX > boy.x + boy.width) {//ткнули правее
+          if (boy.x + boy.width + boy.dx > canvas.width) {
+            boy.dx = 0;
+            boy.x = canvas.width - boy.width;
+          } else {
+            boy.dx = boy.speed;
+          }
+        } //конец ткнули правее
+        break;
+      }
+    case 2:
+    // Обработка двойного касания
+        musicFon.muted = true;
+        gameSpeed = gameSpeed ? 0 : 1;
+        tuchPosition = "pause";
+        stars.forEach((s) => {
+          s.speed = gameSpeed;
+        });
+        clouds.forEach((c) => {
+          c.speed = gameSpeed;
+        });
+        bg1.speed = gameSpeed;
+        bg2.speed = gameSpeed;
+      break;
+    default:
+    //Обработка тройного касания
+      musicFon.muted = !musicFon.muted;
+      if (!musicFon.muted) {
+          var promise = musicFon.play();
+          if (promise !== undefined) {
+            promise.then(_ => {
+              musicFon.play();
+            }).catch(error => {});
+          }
+      };
+  }//конец switch
+}//конец функции handleStart
+
 function startup() {
   canvas.addEventListener("touchstart", handleStart, false);
-  //canvas.addEventListener("touchend", handleEnd, false);
-  //canvas.addEventListener("touchcancel", handleCancel, false);
-  //canvas.addEventListener("touchmove", handleMove, false);
 }
 
 //обработываю нажатия клавиш
@@ -467,79 +538,6 @@ function animate() {
 }
 
 document.addEventListener("DOMContentLoaded", startup);
-
-function handleStart(evt) {
-  evt.stopPropagation(); //перехватываем обработку событий
-  switch (evt.changedTouches.length) {
-    case 1:
-      // Обработка одинарного касания
-      tuchX = evt.changedTouches[0].pageX;
-      tuchY = evt.changedTouches[0].pageY;
-      tuchPosition = "на экране";
-      if (tuchX > boy.x - 15 && tuchX < boy.x + boy.width + 15) {//ткнули в границы ширины мальчика
-        // tuchPosition = "над границами мальчика";
-        if (tuchY < boy.y + boy.height) {//точно в мальчика
-          // tuchPosition = "над мальчиком";
-          keyCode = "ArrowUp";
-          if (boy.onGround) {
-            //мальчик на земле/облаке
-            boy.dy = -25; //прыгаем
-            boy.onGround = false; //
-          } else boy.dy = -boy.speed; //двигаемся влево со скоростью игры
-        } else { //не выше
-          tuchPosition = "под мальчиком";
-          keyCode = "ArrowDown";
-          if (boy.onGround && boy.y + boy.height < canvas.height) {
-            boy.onGround = false;
-          }
-          boy.dy = boy.speed;
-        } //конец не выше
-      } else {//не в границах мальчика
-        if (tuchX < boy.x) {//ткнули левее
-          if (boy.x + boy.dx < 0) {
-            boy.dx = 0;
-            boy.x = 0;
-          } else {
-            boy.dx = -boy.speed;
-          }
-        } //конец ткнули левее
-        if (tuchX > boy.x + boy.width) {//ткнули правее
-          if (boy.x + boy.width + boy.dx > canvas.width) {
-            boy.dx = 0;
-            boy.x = canvas.width - boy.width;
-          } else {
-            boy.dx = boy.speed;
-          }
-        } //конец ткнули правее
-        break;
-      }
-    case 2:
-    // Обработка двойного касания
-        musicFon.muted = true;
-        gameSpeed = gameSpeed ? 0 : 1;
-        tuchPosition = "pause";
-        stars.forEach((s) => {
-          s.speed = gameSpeed;
-        });
-        clouds.forEach((c) => {
-          c.speed = gameSpeed;
-        });
-        bg1.speed = gameSpeed;
-        bg2.speed = gameSpeed;
-      break;
-    default:
-    //Обработка тройного касания
-      musicFon.muted = !musicFon.muted;
-      if (!musicFon.muted) {
-          var promise = musicFon.play();
-          if (promise !== undefined) {
-            promise.then(_ => {
-              musicFon.play();
-            }).catch(error => {});
-          }
-      };
-  }//конец switch
-}//конец функции handleStart
 
 //запускаю игру
 animate();
