@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameScreen");
-let musicBell = new Audio("audio/колокольчик.mp3");
-let musicFon = new Audio("audio/fon.mp3");
-
+let soundBell = new Audio("./audio/колокольчик.mp3");
+let musicFon = new Audio("./audio/fon.mp3");
+import {boyInit as boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection} from "./modules/boy.js";
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
   musicFon.muted = true;
@@ -9,11 +9,11 @@ musicFon.addEventListener('loadmetadata', () => {
   musicFon.volume = 0.2;
 })
 
-musicBell.addEventListener('loadmetadata', () => {
-  musicBell.loop = false;
-  musicBell.autoplay = false;
-  musicBell.currentTime = 0;
-  musicBell.volume = 0.2;
+soundBell.addEventListener('loadmetadata', () => {
+  soundBell.loop = false;
+  soundBell.autoplay = false;
+  soundBell.currentTime = 0;
+  soundBell.volume = 0.2;
 })
 // @ts-ignore
 const ctx = canvas.getContext("2d");
@@ -23,8 +23,8 @@ canvas.width = window.innerWidth;
 // @ts-ignore
 canvas.height = window.innerHeight;
 //строим таблицу мест под облака и звезды
-let matrixStars = [];
-let matrixClouds = [];
+let arrStars = [];
+let arrClouds = [];
 // @ts-ignore
 const maxRowsStars = Math.round((canvas.height - 40) / 40);
 // @ts-ignore
@@ -35,7 +35,7 @@ const maxRowsClouds = Math.round((canvas.height - 180) / 90);
 const maxColumnsClouds = Math.round(canvas.width / 180);
 for (let x = 1; x <= maxColumnsStars; x++) {
   for (let y = 1; y <= maxRowsStars; y++) {
-    matrixStars.push({
+    arrStars.push({
       x: x * 40,
       y: 20 + y * 40,
       empty: true
@@ -44,15 +44,15 @@ for (let x = 1; x <= maxColumnsStars; x++) {
 }
 for (let x = 1; x <= maxColumnsClouds; x++) {
   for (let y = 1; y <= maxRowsClouds; y++) {
-    matrixClouds.push({
+    arrClouds.push({
       x: x * 180,
       y: 90 + y * 90,
       empty: true
     });
   }
 }
-const maxStar = matrixStars.length - 1;
-const maxClouds = matrixClouds.length - 1;
+const maxStar = arrStars.length - 1;
+const maxClouds = arrClouds.length - 1;
 let tuchX = 0;
 let tuchY = 0;
 let tuchPosition = '';
@@ -62,9 +62,8 @@ const cloudsCount = 5;
 const starsCount = 9;
 //задаю скорость анимации
 let gameSpeed = 1;
-const bgImgSrc = "src/img/небо.png";
-const cloudImgSrc = "src/img/облако.png";
-const boyImgSrc = "src/img/мальчик.png";
+const bgImgSrc = "./src/img/небо.png";
+const cloudImgSrc = "./src/img/облако.png";
 const starImgSrc = "src/img/звездочка.png";
 let keyCode = " ";
 let score = 0;
@@ -105,20 +104,20 @@ function backgroundMoove() {
 const stars = [];
   for (var i = 0; i < starsCount; i++) {
     var ind = maxColumnsStars * maxRowsStars - (maxRowsStars - 2) - 1;
-    while (!matrixStars[ind]?.empty) {
+    while (!arrStars[ind]?.empty) {
       //пока место не свободно
       ind = Math.round(Math.random() * maxStar); //выбираем случайное место
     }
-    matrixStars[ind].empty = false; //занимаем место
+    arrStars[ind].empty = false; //занимаем место
     stars.push({
-      x: matrixStars[ind].x,
-      y: matrixStars[ind].y,
+      x: arrStars[ind].x,
+      y: arrStars[ind].y,
       radius: 20,
       collected: false,
       img: new Image(),
       speed: gameSpeed,
       dy: 0,
-      matrixStarsInd: ind
+      arrStarsInd: ind
     });
     stars[i].img.src = starImgSrc;
   }
@@ -128,20 +127,20 @@ function starsMoove() {
     star.x -= star.speed;
     star.y += star.dy;
     if (star.x + star.radius + 5 < 0) {
-      matrixStars[star.matrixStarsInd].empty = true; //освобождаем место
+      arrStars[star.arrStarsInd].empty = true; //освобождаем место
       fail += 1; //увеличиваем значение голов
       var ind = maxColumnsStars * maxRowsStars - (maxRowsStars - 2) - 1;
-      while (!matrixStars[ind]?.empty) {
+      while (!arrStars[ind]?.empty) {
         //пока место не свободно
         ind =
           maxColumnsStars * maxRowsStars -
           Math.round(Math.random() * (maxRowsStars - 2)) -
           1; //выбираем случайное место в крайнем правом ряду таблицы
       }
-      matrixStars[ind].empty = false; //занимаем место
-      star.x = matrixStars[ind].x;
-      star.y = matrixStars[ind].y;
-      star.matrixStarsInd = ind;
+      arrStars[ind].empty = false; //занимаем место
+      star.x = arrStars[ind].x;
+      star.y = arrStars[ind].y;
+      star.arrStarsInd = ind;
     }
   });
 }
@@ -160,183 +159,20 @@ function starsDraw() {
 
 /// ===== МАЛЬЧИК =====
 //создаю мальчика
-const boy = {};
-// @ts-ignore
-boy.x = Math.round(canvas.width / 2) - 37;
-boy.y = 0;
-boy.width = 74;
-boy.height = 90;
-boy.speed = 15;
-boy.dx = 0;
-boy.dy = 0;
-boy.gravity = 1;
-boy.stratMoveX = 0;
-boy.onGround = false;
-boy.img = new Image();
-boy.img.src = boyImgSrc;
-// }
-//рисую Мальчика
-function boyDraw() {
-  ctx.drawImage(boy.img, boy.x, boy.y, boy.width, boy.height);
-  // ctx.strokeStyle = "red";
-  // ctx.strokeRect(boy.x, boy.y, boy.width, boy.height);
-}
-//двигаю мальчика по экрану
-function boyMoove() {
-  switch (keyCode) {
-    case "ArrowLeft":
-      boy.dx = -25;
-      boy.stratMoveX = boy.x;
-      keyCode = '';
-      break;
-    case "ArrowRight":
-      boy.dx = 25;
-      boy.stratMoveX = boy.x;
-      keyCode = '';
-      break;
-    case "ArrowUp":
-      boy.dy = -25;
-      boy.stratMoveX = boy.x;
-      keyCode = '';
-      boy.onGround = false;
-      break;
-    case "Space":
-      boy.dy = -25;
-      boy.stratMoveX = boy.x;
-      keyCode = '';
-      boy.onGround = false;
-      break;
-    case "ArrowDown":
-      keyCode = '';
-      boy.onGround = false;
-      break;
-  }
-  if (boy.onGround) {//мальчик на земле/на облаке
-    boy.dy = 0;//останавливаем движение по вертикали
-    // @ts-ignore
-    if (boy.y + boy.height < canvas.height) {//если мальчик выше земли
-      if (boy.dx != 0) {
-        boy.dx += boy.gravity;
-        boy.x += boy.dx;//двигаем горизонтально
-        clouds.forEach((cloud) => {
-          if (
-            cloud.withBoy &&
-            boy.x + Math.round(boy.width / 2) < cloud.x ||
-            boy.x + Math.round(boy.width / 2) > cloud.x + cloud.width
-          ) {
-            cloud.withBoy = false;
-            boy.onGround = false;
-          };
-        });
-      } else boy.x -= gameSpeed;//двигаем со скоростью игры
-    } else { //если мальчик на земле
-      if (boy.dx != 0) {
-        boy.dx += boy.gravity;
-        boy.x += boy.dx;//двигаем горизонтально
-      }
-    }
-  } else {//мальчик в вертикальном движении
-    boy.dy += boy.gravity;//увеличиваем скорость движения
-    boy.y += boy.dy;//двигаем вертикально
-    if (boy.dy != 0) boy.x += boy.dx;//двигаем горизонтально
-  }
-  if (
-    ((boy.dx < 0) && (boy.stratMoveX - boy.x) >= 3*boy.width) ||
-    ((boy.dx > 0) && (boy.x - boy.stratMoveX) >= 3*boy.width)
-  ) boy.dx = 0;//если продвинулся далеко
-}
-//проверяю не вылетел ли мальчик за границы экрана
-function boyCheckPosition() {
-  //если мальчик вылетел за верхную границу экрана
-  if (boy.y + boy.dy < 0) {
-    boy.y = 0;
-    boy.dy = 0;
-  }
-  //если мальчик вылетел за нижную границу экрана
-  // @ts-ignore
-  if (boy.y + boy.height > canvas.height) {
-    // @ts-ignore
-    boy.y = canvas.height - boy.height; //устанавливаем его на землю
-    boy.dy = 0;
-    boy.onGround = true;
-  }
-  // @ts-ignore
-  if (boy.x + boy.width + boy.dx > canvas.width) {//если мальчик вылетел за правую границу экрана
-    // @ts-ignore
-    boy.x = canvas.width - boy.width;
-    boy.dx = 0;
-  }
-  if (boy.x + boy.dx < 0) {//если мальчик вылетел за левую границу экрана
-    boy.x = 0;
-    boy.dx = 0;
-    if (boy.y + boy.height < canvas.height) boy.onGround = false;
-  }
-}
-//проверяю мальчик попал ли в облако
-function boyCheckInClouds() {
-  //если нажата клавиша вниз - не цепляемся за облако
-  if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
-    clouds.forEach((cloud) => {
-      if (
-        (boy.dy > 0 || boy.dx !=0) &&
-        boy.x + boy.width / 2 > cloud.x &&
-        boy.x + boy.width / 2 < cloud.x + cloud.width &&
-        boy.y + boy.height > cloud.y + Math.round(boy.height / 2) &&
-        boy.y + boy.height < cloud.y + Math.round(boy.height / 2) + boy.dy + 2
-      ) {
-        boy.onGround = true;
-        cloud.withBoy = true;
-      }
-    });
-  }
-
-}
-//проверяю собрал ли мальчик звезду
-function boyCheckStarsCollection() {
-  stars.forEach(function (star) {
-    if (
-      !star.dy &&
-      !star.collected &&
-      boy.x < star.x + star.radius &&
-      boy.x + boy.width > star.x - star.radius &&
-      boy.y < star.y + star.radius &&
-      boy.y + boy.height > star.y - star.radius
-    ) {
-      musicBell.currentTime = 0;
-      musicBell.loop = false;
-      musicBell.muted=false;
-      var promise = musicBell.play();
-      // @ts-ignore
-      if (promise !== undefined) { promise.then(_ => { }).catch(error => { }); };
-      // musicBell.play();
-      matrixStars[star.matrixStarsInd].empty = true; //освобождаем место
-      var ind = maxColumnsStars * maxRowsStars - Math.round(Math.random() * maxRowsStars) - 1; //выбираем случайное место в крайнем правом ряду таблицы
-      while (!matrixStars[ind]?.empty) {
-        //пока место не свободно
-        ind = maxColumnsStars * maxRowsStars - Math.round(Math.random() * maxRowsStars) - 1; //выбираем случайное место в крайнем правом ряду таблицы
-      }
-      matrixStars[ind].empty = false; //занимаем место
-      star.x = matrixStars[ind].x + star.radius * 2;
-      star.y = matrixStars[ind].y;
-      star.matrixStarsInd = ind;
-      score += 1;
-    }
-  });
-}
 
 /// ===== ОБЛАКА =====
 //создаю масссив облаков
 var clouds = [];
   for (var i = 0; i < cloudsCount; i++) {
     var ind = maxClouds - 1;
-    while (!matrixClouds[ind]?.empty) {
+    while (!arrClouds[ind]?.empty) {
       //пока место не свободно
       ind = Math.round(Math.random() * maxClouds); //выбираем случайное место
     }
-    matrixClouds[ind].empty = false; //занимаем место
+    arrClouds[ind].empty = false; //занимаем место
     clouds.push({
-      x: matrixClouds[ind].x,
-      y: matrixClouds[ind].y,
+      x: arrClouds[ind].x,
+      y: arrClouds[ind].y,
       height: 90,
       width: 180,
       speed: gameSpeed,
@@ -360,16 +196,16 @@ function cloudsMoove() {
   clouds.forEach(function (c) {
     c.x -= c.speed;
     if (c.x + c.width < 0) {
-      matrixClouds[c.matrixCloudsInd].empty = true; //освобождаем место в таблице
+      arrClouds[c.matrixCloudsInd].empty = true; //освобождаем место в таблице
       c.withBoy = false;
       var ind = maxColumnsClouds * maxRowsClouds - maxColumnsClouds - 1;
-      while (!matrixClouds[ind]?.empty) {
+      while (!arrClouds[ind]?.empty) {
         //пока место не свободно
         ind =maxColumnsClouds * maxRowsClouds -Math.round(Math.random() * (maxColumnsClouds + 1)) -1; //выбираем случайное место в крайнем правом ряду таблицы
       }
-      matrixClouds[ind].empty = false; //занимаем место
-      c.x = matrixClouds[ind].x;
-      c.y = matrixClouds[ind].y;
+      arrClouds[ind].empty = false; //занимаем место
+      c.x = arrClouds[ind].x;
+      c.y = arrClouds[ind].y;
       c.matrixCloudsInd = ind;
     }
   });
@@ -536,17 +372,17 @@ function animate() {
   starsMoove();
   cloudsMoove();
 
-  boyMoove();
-  boyCheckPosition();
-  boyCheckInClouds();
+  boyMoove(boy, keyCode);
+  boyCheckPosition(boy, canvas);
+  boyCheckInClouds(boy, keyCode, tuchPosition, clouds);
 
-  boyCheckStarsCollection();
+  boyCheckStarsCollection(boy, stars, arrStars, soundBell, maxColumnsStars, maxRowsStars, score);
   backgroundDraw();
   if (gameSpeed) {
     starsDraw();
     failDraw();
   }
-  boyDraw();
+  boyDraw(boy, ctx);
   if (gameSpeed) {
     cloudsDraw();
   }
