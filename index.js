@@ -239,28 +239,28 @@ function animate() {
   // starsMoove();
   // cloudsMoove();
 
-  boyMoove(boy, keyCode, canvas, clouds, gameSpeed);
+  boyMoove(boy, keyCode, canvas, cloud, gameSpeed);
   boyCheckPosition(boy, canvas);
-  boyCheckInClouds(boy, keyCode, tuchPosition, clouds);
-  boyCheckStarsCollection(boy, stars, arrStars, soundBell, maxColumnsStars, maxRowsStars, score);
+  // boyCheckInClouds(boy, keyCode, tuchPosition, clouds);
+  // boyCheckStarsCollection(boy, stars, arrStars, soundBell, maxColumnsStars, maxRowsStars, score);
   // backgroundDraw();
-  if (gameSpeed) {
-    // starsDraw();
-    failDraw();
-  }
+  // if (gameSpeed) {
+  //   // starsDraw();
+  //   failDraw();
+  // }
   boyDraw(boy, ctx);
-  if (gameSpeed) {
-    // cloudsDraw();
-  }
+  // if (gameSpeed) {
+  //   // cloudsDraw();
+  // }
   scoreDraw();
-  textDraw(
-    // @ts-ignore
-    canvas.width - 120,
-    30,
-    "Музыка: " + (musicFon.muted ? "откл." : 'вкл.'),
-    (musicFon.muted ? "#F00" : "#FFF"),
-    "1.0"
-  );
+  // textDraw(
+  //   // @ts-ignore
+  //   canvas.width - 120,
+  //   30,
+  //   "Музыка: " + (musicFon.muted ? "откл." : 'вкл.'),
+  //   (musicFon.muted ? "#F00" : "#FFF"),
+  //   "1.0"
+  // );
   //для отлакдки
   // textDraw(
   //   // @ts-ignore
@@ -272,33 +272,33 @@ function animate() {
   // );
 
 
-  if (!gameSpeed) {
-    if ((fps > 1) && (fps < 80 / 2)) {
-      fps += 1;
-      // @ts-ignore
-      textDraw(canvas.width / 2 - 70, canvas.height / 2, "ПАУЗА", "#FF5", "3");
-    } else { fps > 80 ? fps = 0 : fps += 1};
-  }
+  // if (!gameSpeed) {
+  //   if ((fps > 1) && (fps < 80 / 2)) {
+  //     fps += 1;
+  //     // @ts-ignore
+  //     textDraw(canvas.width / 2 - 70, canvas.height / 2, "ПАУЗА", "#FF5", "3");
+  //   } else { fps > 80 ? fps = 0 : fps += 1};
+  // }
 
-  if (score === 100){
-    if (gameSpeed && keyCode != "KeyP" && tuchPosition != "pause") {
-      gameSpeed = 0;
-      // stars.forEach((s) => {
-      //   s.speed = gameSpeed;
-      // });
-      // clouds.forEach((c) => {
-      //   c.speed = gameSpeed;
-      // });
-      // bg1.speed = gameSpeed;
-      // bg2.speed = gameSpeed;
-    }
-    // @ts-ignore
-    textDraw(canvas.width / 2 - 70, 40, "Андрей", "#FF5", "3");
-    // @ts-ignore
-    textDraw(canvas.width / 2 - 80, 70 , "Ты молодец!", "#FF5", "2");
-    // @ts-ignore
-    textDraw(canvas.width / 2 - 115, 100, "Собрал " + "100" + " звёзд!", "#FF5", "2");
-  }
+  // if (score === 100){
+  //   if (gameSpeed && keyCode != "KeyP" && tuchPosition != "pause") {
+  //     gameSpeed = 0;
+  //     // stars.forEach((s) => {
+  //     //   s.speed = gameSpeed;
+  //     // });
+  //     // clouds.forEach((c) => {
+  //     //   c.speed = gameSpeed;
+  //     // });
+  //     // bg1.speed = gameSpeed;
+  //     // bg2.speed = gameSpeed;
+  //   }
+  //   // @ts-ignore
+  //   textDraw(canvas.width / 2 - 70, 40, "Андрей", "#FF5", "3");
+  //   // @ts-ignore
+  //   textDraw(canvas.width / 2 - 80, 70 , "Ты молодец!", "#FF5", "2");
+  //   // @ts-ignore
+  //   textDraw(canvas.width / 2 - 115, 100, "Собрал " + "100" + " звёзд!", "#FF5", "2");
+  // }
   requestAnimationFrame(animate);
 }
 
