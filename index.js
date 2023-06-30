@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameScreen");
 let soundBell = new Audio("./audio/колокольчик.mp3");
 let musicFon = new Audio("./audio/fon.mp3");
-import { boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection } from "./modules/boy.js";
+import { boy} from "./modules/boy.js";
 import { star, starDraw, starMoove } from "./modules/star.js";
 import { cloud } from "./modules/cloud.js";
 import { backgroundInit, backgroundMoove,  backgroundDraw } from "./modules/background.js";
