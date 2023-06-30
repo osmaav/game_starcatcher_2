@@ -1,6 +1,6 @@
 //boy.js
 //создаю мальчика
-class boy {
+class Boy {
   name = "boy";
   constructor(x = 0, y = 0, width = 74, height = 90, dx = 0, dy = 0, speed = 15, gravity =1, onGround = false) {
     this.x = x;
@@ -160,4 +160,4 @@ class boy {
 
 }
 
-export { boy };
+export { Boy };

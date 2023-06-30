@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameScreen");
 let soundBell = new Audio("./audio/колокольчик.mp3");
 let musicFon = new Audio("./audio/fon.mp3");
-import { boy } from "./modules/boy.js";
+import { Boy } from "./modules/boy.js";
 import { star, starDraw, starMoove } from "./modules/star.js";
 import { cloud } from "./modules/cloud.js";
 import { backgroundInit, backgroundMoove,  backgroundDraw } from "./modules/background.js";
@@ -39,7 +39,7 @@ const maxColumnsClouds = Math.round(canvas.width / 180);
 const maxStar = arrStars.length - 1;
 const maxClouds = arrClouds.length - 1;
 
-let myboy = new boy(0, canvas.height - 90, 74, 90, 0, 0);
+let boy = new Boy(0, canvas.height - 90, 74, 90, 0, 0);
 myboy.onGround = true;
 
 let tuchX = 0;
@@ -221,7 +221,7 @@ function animate() {
   //очищаю экран
   // @ts-ignore
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  myboy.boyDraw(ctx);
+  boy.boyDraw(ctx);
   // backgroundMoove();
   // starsMoove();
   // cloudsMoove();
