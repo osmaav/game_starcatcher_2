@@ -2,6 +2,9 @@ const canvas = document.getElementById("gameScreen");
 let soundBell = new Audio("./audio/колокольчик.mp3");
 let musicFon = new Audio("./audio/fon.mp3");
 import { boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection } from "./modules/boy.js";
+import { star, starDraw, starMoove } from "./modules/star.js";
+import { cloud } from "./modules/cloud.js";
+import { background, backgroundMoove,  backgroundDraw } from "./modules/background.js";
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
   musicFon.muted = true;
@@ -33,24 +36,24 @@ const maxColumnsStars = Math.round(canvas.width / 40);
 const maxRowsClouds = Math.round((canvas.height - 180) / 90);
 // @ts-ignore
 const maxColumnsClouds = Math.round(canvas.width / 180);
-for (let x = 1; x <= maxColumnsStars; x++) {
-  for (let y = 1; y <= maxRowsStars; y++) {
-    arrStars.push({
-      x: x * 40,
-      y: 20 + y * 40,
-      empty: true
-    });
-  }
-}
-for (let x = 1; x <= maxColumnsClouds; x++) {
-  for (let y = 1; y <= maxRowsClouds; y++) {
-    arrClouds.push({
-      x: x * 180,
-      y: 90 + y * 90,
-      empty: true
-    });
-  }
-}
+// for (let x = 1; x <= maxColumnsStars; x++) {
+//   for (let y = 1; y <= maxRowsStars; y++) {
+//     arrStars.push({
+//       star.x = x * 40,
+//       y: 20 + y * 40,
+//       empty: true
+//     });
+//   }
+// }
+// for (let x = 1; x <= maxColumnsClouds; x++) {
+//   for (let y = 1; y <= maxRowsClouds; y++) {
+//     arrClouds.push({
+//       x: x * 180,
+//       y: 90 + y * 90,
+//       empty: true
+//     });
+//   }
+// }
 const maxStar = arrStars.length - 1;
 const maxClouds = arrClouds.length - 1;
 let tuchX = 0;
@@ -62,17 +65,12 @@ const cloudsCount = 5;
 const starsCount = 9;
 //задаю скорость анимации
 let gameSpeed = 1;
-const bgImgSrc = "./src/img/небо.png";
-const cloudImgSrc = "./src/img/облако.png";
-const starImgSrc = "src/img/звездочка.png";
 let keyCode = " ";
 let score = 0;
 let fail = 0;
 
 /// ===== ФОН (НЕБО) =====
 //создаю фон
-const bgImage = new Image();
-bgImage.src = bgImgSrc;
 let bg1 = {};
 let bg2 = {};
 bg1.x = 0;
@@ -82,80 +80,12 @@ bg1.speed = gameSpeed;
 bg2.x = canvas.width;
 bg2.y = 0;
 bg2.speed = gameSpeed;
-//рисую Фон
-function backgroundDraw() {
-  // @ts-ignore
-  ctx.drawImage(bgImage, bg1.x, bg1.y, canvas.width, canvas.height);
-  // @ts-ignore
-  ctx.drawImage(bgImage, bg2.x, bg2.y, canvas.width, canvas.height);
-}
-//двигаю фон
-function backgroundMoove() {
-  bg1.x -= bg1.speed;
-  bg2.x -= bg2.speed;
-  // @ts-ignore
-  if (bg1.x < -canvas.width) bg1.x = canvas.width;
-  // @ts-ignore
-  if (bg2.x < -canvas.width) bg2.x = canvas.width;
-}
+
 
 /// ===== ЗВЕЗДЫ =====
 //создаю массив Звезд
 const stars = [];
-  for (var i = 0; i < starsCount; i++) {
-    var ind = maxColumnsStars * maxRowsStars - (maxRowsStars - 2) - 1;
-    while (!arrStars[ind]?.empty) {
-      //пока место не свободно
-      ind = Math.round(Math.random() * maxStar); //выбираем случайное место
-    }
-    arrStars[ind].empty = false; //занимаем место
-    stars.push({
-      x: arrStars[ind].x,
-      y: arrStars[ind].y,
-      radius: 20,
-      collected: false,
-      img: new Image(),
-      speed: gameSpeed,
-      dy: 0,
-      arrStarsInd: ind
-    });
-    stars[i].img.src = starImgSrc;
-  }
-//двигаем звезды
-function starsMoove() {
-  stars.forEach(function (star) {
-    star.x -= star.speed;
-    star.y += star.dy;
-    if (star.x + star.radius + 5 < 0) {
-      arrStars[star.arrStarsInd].empty = true; //освобождаем место
-      fail += 1; //увеличиваем значение голов
-      var ind = maxColumnsStars * maxRowsStars - (maxRowsStars - 2) - 1;
-      while (!arrStars[ind]?.empty) {
-        //пока место не свободно
-        ind =
-          maxColumnsStars * maxRowsStars -
-          Math.round(Math.random() * (maxRowsStars - 2)) -
-          1; //выбираем случайное место в крайнем правом ряду таблицы
-      }
-      arrStars[ind].empty = false; //занимаем место
-      star.x = arrStars[ind].x;
-      star.y = arrStars[ind].y;
-      star.arrStarsInd = ind;
-    }
-  });
-}
-//рисую Звезды
-function starsDraw() {
-  stars.forEach(function (star) {
-    ctx.drawImage(
-      star.img,
-      star.x - star.radius,
-      star.y - star.radius,
-      star.radius * 4,
-      star.radius * 2
-    );
-  });
-}
+
 
 /// ===== МАЛЬЧИК =====
 //создаю мальчика
@@ -182,34 +112,7 @@ var clouds = [];
     });
     clouds[i].img.src = cloudImgSrc;
   }
-//рисую облака
-function cloudsDraw() {
-  clouds.forEach(function (c) {
-    ctx.drawImage(c.img, c.x, c.y, c.width, c.height);
-    // ctx.strokeStyle = "blue";
-    // ctx.strokeRect(c.x, c.y, c.width, c.height);
-    // textDraw(c.x, c.y + 20, "boy: "+ c.withBoy);
-  });
-}
-//двигаю облака
-function cloudsMoove() {
-  clouds.forEach(function (c) {
-    c.x -= c.speed;
-    if (c.x + c.width < 0) {
-      arrClouds[c.matrixCloudsInd].empty = true; //освобождаем место в таблице
-      c.withBoy = false;
-      var ind = maxColumnsClouds * maxRowsClouds - maxColumnsClouds - 1;
-      while (!arrClouds[ind]?.empty) {
-        //пока место не свободно
-        ind =maxColumnsClouds * maxRowsClouds -Math.round(Math.random() * (maxColumnsClouds + 1)) -1; //выбираем случайное место в крайнем правом ряду таблицы
-      }
-      arrClouds[ind].empty = false; //занимаем место
-      c.x = arrClouds[ind].x;
-      c.y = arrClouds[ind].y;
-      c.matrixCloudsInd = ind;
-    }
-  });
-}
+
 
 //пишу текст на экране
 

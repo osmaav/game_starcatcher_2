@@ -1,6 +1,6 @@
 //boy.js
 //создаю мальчика
-  let boy= {}
+let boy = {};
  function boyInit() {
   boy.x = 0;
   boy.y = 0;
@@ -25,7 +25,7 @@ function boyDraw(boy = {}, ctx) {
   // ctx.strokeRect(boy.x, boy.y, boy.width, boy.height);
 };
 //двигаю мальчика по экрану
-function boyMoove(boy = {}, keyCode = "", canvas, clouds = {}, gameSpeed=0) {
+function boyMoove(boy = {}, keyCode = "", canvas, clouds = {}, gameSpeed = 0) {
   switch (keyCode) {
     case "ArrowLeft":
       boy.dx = -25;
@@ -89,7 +89,7 @@ function boyMoove(boy = {}, keyCode = "", canvas, clouds = {}, gameSpeed=0) {
   ) boy.dx = 0;//если продвинулся далеко
 };
 //проверяю не вылетел ли мальчик за границы экрана
-function boyCheckPosition(boy = {},canvas) {
+function boyCheckPosition(boy = {}, canvas) {
   //если мальчик вылетел за верхную границу экрана
   if (boy.y + boy.dy < 0) {
     boy.y = 0;
@@ -116,7 +116,7 @@ function boyCheckPosition(boy = {},canvas) {
   }
 };
 //проверяю мальчик попал ли в облако
-function boyCheckInClouds(boy = {}, keyCode="", tuchPosition="", clouds={}) {
+function boyCheckInClouds(boy = {}, keyCode = "", tuchPosition = "", clouds = {}) {
   //если нажата клавиша вниз - не цепляемся за облако
   if (keyCode != "ArrowDown" && tuchPosition != "под мальчиком") {
     clouds.forEach((cloud) => {
@@ -135,7 +135,7 @@ function boyCheckInClouds(boy = {}, keyCode="", tuchPosition="", clouds={}) {
 
 };
 //проверяю собрал ли мальчик звезду
-function boyCheckStarsCollection(boy = {}, stars = {}, arrStars=[], sound, maxColumnsStars =0, maxRowsStars=0, score=0) {
+function boyCheckStarsCollection(boy = {}, stars = {}, arrStars = [], sound, maxColumnsStars = 0, maxRowsStars = 0, score = 0) {
   stars.forEach(function (star) {
     if (
       !star.dy &&
