@@ -1,7 +1,7 @@
 //background.js
 //создаю фон
 let background = {};
-function backgroundInit() {
+function backgroundInit(x, y, width, height){
   background.x;
   background.y;
   background.width;
@@ -12,20 +12,13 @@ function backgroundInit() {
 };
 backgroundInit();
 //рисую Фон
-function backgroundDraw() {
-  // @ts-ignore
-  ctx.drawImage(bgImage, bg1.x, bg1.y, canvas.width, canvas.height);
-  // @ts-ignore
-  ctx.drawImage(bgImage, bg2.x, bg2.y, canvas.width, canvas.height);
+function backgroundDraw(ctx) {
+  ctx.drawImage(background.img, background.x, background.y, background.width, background.height);
 }
 //двигаю фон
-function backgroundMoove() {
-  bg1.x -= bg1.speed;
-  bg2.x -= bg2.speed;
-  // @ts-ignore
-  if (bg1.x < -canvas.width) bg1.x = canvas.width;
-  // @ts-ignore
-  if (bg2.x < -canvas.width) bg2.x = canvas.width;
+function backgroundMoove(canvas) {
+  background.x -= background.speed;
+  if (background.x < -canvas.width) background.x = canvas.width;
 }
 
-export { background, backgroundMoove,  backgroundDraw};
+export { backgroundInit, backgroundMoove,  backgroundDraw};

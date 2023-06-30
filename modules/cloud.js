@@ -1,7 +1,7 @@
 //cloud.js
 //создаю облако
 let cloud = {};
-function cloudInit(x = 0, y = 0, height = 0, width = 0, empty = true) {
+function cloudInit(x = 90, y = 180, height = 0, width = 0, empty = true) {
   cloud.x;
   cloud.y;
   cloud.width;

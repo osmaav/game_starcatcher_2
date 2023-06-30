@@ -4,7 +4,7 @@ let musicFon = new Audio("./audio/fon.mp3");
 import { boy, boyDraw, boyMoove, boyCheckPosition, boyCheckInClouds, boyCheckStarsCollection } from "./modules/boy.js";
 import { star, starDraw, starMoove } from "./modules/star.js";
 import { cloud } from "./modules/cloud.js";
-import { background, backgroundMoove,  backgroundDraw } from "./modules/background.js";
+import { backgroundInit, backgroundMoove,  backgroundDraw } from "./modules/background.js";
 musicFon.addEventListener('loadmetadata', () => {
   musicFon.currentTime = 0;
   musicFon.muted = true;
@@ -71,47 +71,12 @@ let fail = 0;
 
 /// ===== ФОН (НЕБО) =====
 //создаю фон
-let bg1 = {};
-let bg2 = {};
-bg1.x = 0;
-bg1.y = 0;
-bg1.speed = gameSpeed;
-// @ts-ignore
-bg2.x = canvas.width;
-bg2.y = 0;
-bg2.speed = gameSpeed;
-
+const bg1 = backgroundInit(0,0, canvas.width, vanvas.height);
+const bg2 = backgroundInit(canvas.width,0, canvas.width, vanvas.height);
 
 /// ===== ЗВЕЗДЫ =====
 //создаю массив Звезд
 const stars = [];
-
-
-/// ===== МАЛЬЧИК =====
-//создаю мальчика
-
-/// ===== ОБЛАКА =====
-//создаю масссив облаков
-var clouds = [];
-  for (var i = 0; i < cloudsCount; i++) {
-    var ind = maxClouds - 1;
-    while (!arrClouds[ind]?.empty) {
-      //пока место не свободно
-      ind = Math.round(Math.random() * maxClouds); //выбираем случайное место
-    }
-    arrClouds[ind].empty = false; //занимаем место
-    clouds.push({
-      x: arrClouds[ind].x,
-      y: arrClouds[ind].y,
-      height: 90,
-      width: 180,
-      speed: gameSpeed,
-      withBoy: false,
-      img: new Image(),
-      matrixCloudsInd: ind
-    });
-    clouds[i].img.src = cloudImgSrc;
-  }
 
 
 //пишу текст на экране
@@ -270,23 +235,22 @@ function animate() {
   //очищаю экран
   // @ts-ignore
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  backgroundMoove();
-  starsMoove();
-  cloudsMoove();
+  // backgroundMoove();
+  // starsMoove();
+  // cloudsMoove();
 
   boyMoove(boy, keyCode, canvas, clouds, gameSpeed);
   boyCheckPosition(boy, canvas);
   boyCheckInClouds(boy, keyCode, tuchPosition, clouds);
-
   boyCheckStarsCollection(boy, stars, arrStars, soundBell, maxColumnsStars, maxRowsStars, score);
-  backgroundDraw();
+  // backgroundDraw();
   if (gameSpeed) {
-    starsDraw();
+    // starsDraw();
     failDraw();
   }
   boyDraw(boy, ctx);
   if (gameSpeed) {
-    cloudsDraw();
+    // cloudsDraw();
   }
   scoreDraw();
   textDraw(
@@ -319,14 +283,14 @@ function animate() {
   if (score === 100){
     if (gameSpeed && keyCode != "KeyP" && tuchPosition != "pause") {
       gameSpeed = 0;
-      stars.forEach((s) => {
-        s.speed = gameSpeed;
-      });
-      clouds.forEach((c) => {
-        c.speed = gameSpeed;
-      });
-      bg1.speed = gameSpeed;
-      bg2.speed = gameSpeed;
+      // stars.forEach((s) => {
+      //   s.speed = gameSpeed;
+      // });
+      // clouds.forEach((c) => {
+      //   c.speed = gameSpeed;
+      // });
+      // bg1.speed = gameSpeed;
+      // bg2.speed = gameSpeed;
     }
     // @ts-ignore
     textDraw(canvas.width / 2 - 70, 40, "Андрей", "#FF5", "3");
