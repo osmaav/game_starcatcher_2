@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameScreen");
 let soundBell = new Audio("./audio/колокольчик.mp3");
 let musicFon = new Audio("./audio/fon.mp3");
-import { boy} from "./modules/boy.js";
+import { boy } from "./modules/boy.js";
 import { star, starDraw, starMoove } from "./modules/star.js";
 import { cloud } from "./modules/cloud.js";
 import { backgroundInit, backgroundMoove,  backgroundDraw } from "./modules/background.js";
@@ -36,26 +36,12 @@ const maxColumnsStars = Math.round(canvas.width / 40);
 const maxRowsClouds = Math.round((canvas.height - 180) / 90);
 // @ts-ignore
 const maxColumnsClouds = Math.round(canvas.width / 180);
-// for (let x = 1; x <= maxColumnsStars; x++) {
-//   for (let y = 1; y <= maxRowsStars; y++) {
-//     arrStars.push({
-//       star.x = x * 40,
-//       y: 20 + y * 40,
-//       empty: true
-//     });
-//   }
-// }
-// for (let x = 1; x <= maxColumnsClouds; x++) {
-//   for (let y = 1; y <= maxRowsClouds; y++) {
-//     arrClouds.push({
-//       x: x * 180,
-//       y: 90 + y * 90,
-//       empty: true
-//     });
-//   }
-// }
 const maxStar = arrStars.length - 1;
 const maxClouds = arrClouds.length - 1;
+
+let myboy = new boy(0, canvas.height - 90, 74, 90, 0, 0);
+myboy.onGround = true;
+
 let tuchX = 0;
 let tuchY = 0;
 let tuchPosition = '';
@@ -71,8 +57,8 @@ let fail = 0;
 
 /// ===== ФОН (НЕБО) =====
 //создаю фон
-const bg1 = backgroundInit(0,0, canvas.width, vanvas.height);
-const bg2 = backgroundInit(canvas.width,0, canvas.width, vanvas.height);
+const bg1 = backgroundInit(0,0, canvas.width, canvas.height);
+const bg2 = backgroundInit(canvas.width,0, canvas.width, canvas.height);
 
 /// ===== ЗВЕЗДЫ =====
 //создаю массив Звезд
@@ -235,12 +221,13 @@ function animate() {
   //очищаю экран
   // @ts-ignore
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  myboy.boyDraw(ctx);
   // backgroundMoove();
   // starsMoove();
   // cloudsMoove();
 
-  boyMoove(boy, keyCode, canvas, cloud, gameSpeed);
-  boyCheckPosition(boy, canvas);
+  // boyMoove(boy, keyCode, canvas, cloud, gameSpeed);
+  // boyCheckPosition(boy, canvas);
   // boyCheckInClouds(boy, keyCode, tuchPosition, clouds);
   // boyCheckStarsCollection(boy, stars, arrStars, soundBell, maxColumnsStars, maxRowsStars, score);
   // backgroundDraw();
@@ -248,7 +235,7 @@ function animate() {
   //   // starsDraw();
   //   failDraw();
   // }
-  boyDraw(boy, ctx);
+  // boyDraw(boy, ctx);
   // if (gameSpeed) {
   //   // cloudsDraw();
   // }

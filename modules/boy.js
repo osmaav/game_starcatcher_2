@@ -1,24 +1,23 @@
 //boy.js
 //создаю мальчика
 class boy {
-  constructor() {
-    this.x = 0;
-    this.y = 0;
-    this.width = 74;
-    this.height= 90;
-    this.speed=15;
-    this.dx= 0;
-    this.dy= 0;
-    this.gravity= 1;
-    this.stratMoveX= 0;
-    this.onGround= false;
-    this.img= new Image();
+  name = "boy";
+  constructor(x = 0, y = 0, width = 74, height = 90, dx = 0, dy = 0, speed = 15, gravity =1, onGround = false) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.speed = speed;
+    this.dx = dx;
+    this.dy = dy;
+    this.gravity = gravity;
+    this.stratMoveX = 0;
+    this.onGround = onGround;
+    this.img = new Image();
     this.img.src = "./src/img/мальчик.png";
   }
-  boyDraw(boy = {}, ctx) {
-  ctx.drawImage(boy.img, boy.x, boy.y, boy.width, boy.height);
-  // ctx.strokeStyle = "red";
-  // ctx.strokeRect(boy.x, boy.y, boy.width, boy.height);
+  boyDraw(contex) {
+    contex.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
   boyMoove(boy = {}, keyCode = "", canvas, clouds = {}, gameSpeed = 0) {
   switch (keyCode) {
