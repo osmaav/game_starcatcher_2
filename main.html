@@ -11,13 +11,18 @@
 
   <body>
     <script>
-      YaSendSuggestToken(
-        'http://127.0.0.1:5500/index.html',
-        // 'https://osmaav.github.io/game_starcatcher_2',
-        {
-          flag: true
-        }
-      )
+      // YaSendSuggestToken(
+      //   'http://127.0.0.1:5500/index.html',
+      //   // 'https://osmaav.github.io/game_starcatcher_2',
+      //   {
+      //     flag: true
+      //   }
+      // )
+      window.onload = function () {
+        window.YaSendSuggestToken("http://127.0.0.1:5500/blank.html", {
+          "kek": true
+        });
+      };
     </script>
 
   </body>

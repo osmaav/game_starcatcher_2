@@ -28,22 +28,52 @@
     <!-- <script type="module" src="./modules/boy.js"></script> -->
     <!-- <script type="module" src="./index.js"></script> -->
     <script>
-      YaAuthSuggest.init(
-        {
+      window.onload = function () {
+        window.YaAuthSuggest.init({
           client_id: '71f1d422bc6645e89d29531f5f4ec3c8',
           response_type: 'token',
           redirect_uri: 'http://127.0.0.1:5500/main.html'
           // redirect_uri: 'https://osmaav.github.io/game_starcatcher_2'
         },
-        // 'http://127.0.0.1:5500/index.html'
+          'http://127.0.0.1:5500/blank.html', {
+          view: 'button',
+          parentId: 'container',
+          buttonView: 'main',
+          buttonTheme: 'light',
+          buttonSize: 'm',
+          buttonBorderRadius: 0
+        }
+        )
+          .then(function (result) {
+            return result.handler();
+          })
+          .then(function (data) {
+            console.log('Сообщение с токеном: ', data);
+            document.body.innerHTML += `Сообщение с токеном: ${JSON.stringify(data)}`;
+          })
+          .catch(function (error) {
+            console.log('Что-то пошло не так: ', error);
+            document.body.innerHTML += `Что-то пошло не так: ${JSON.stringify(error)}`;
+          });
+      };
+      // YaAuthSuggest.init(
+      //   {
+      //     client_id: '71f1d422bc6645e89d29531f5f4ec3c8',
+      //     response_type: 'token',
+      //     redirect_uri: 'http://127.0.0.1:5500/main.html'
+      //     // redirect_uri: 'https://osmaav.github.io/game_starcatcher_2'
+      //   },
+      //   // 'http://127.0.0.1:5500/index.html'
 
-      )
-        .then(({
-          handler
-        }) => handler())
-        .then(data => console.log('Сообщение с токеном', data))
-        .catch(error => console.log('Обработка ошибки', error));
+      // )
+      //   .then(({
+      //     handler
+      //   }) => handler())
+      //   .then(
+      //     data => console.log('Сообщение с токеном', data)
 
+      //   )
+      //   .catch(error => console.log('Обработка ошибки', error));
     </script>
     <H1> Заголовок!</H1>
   </body>
