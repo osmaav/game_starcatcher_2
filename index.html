@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ловитель звезд @osmaav</title>
+    <title>Диаграмма Ганта</title>
     <style>
       body {
         padding: 0;
@@ -35,14 +35,16 @@
           redirect_uri: 'http://127.0.0.1:5500/main.html'
           // redirect_uri: 'https://osmaav.github.io/game_starcatcher_2'
         },
-          'http://127.0.0.1:5500/blank.html', {
-          view: 'button',
-          parentId: 'container',
-          buttonView: 'main',
-          buttonTheme: 'light',
-          buttonSize: 'm',
-          buttonBorderRadius: 0
-        }
+          'http://127.0.0.1:5500/blank.html',
+          {
+            view: "button",
+            parentId: "buttonContainerId",
+            buttonSize: 'xs',
+            buttonView: 'main',
+            buttonTheme: 'light',
+            buttonBorderRadius: "3",
+            buttonIcon: 'ya',
+          }
         )
           .then(function (result) {
             return result.handler();
