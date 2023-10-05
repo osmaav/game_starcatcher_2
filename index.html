@@ -18,8 +18,9 @@
       }
     </style>
     <script
-      src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js">
-      </script>
+      src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></script>
+    </script>
+
   </head>
 
   <body>
@@ -31,21 +32,18 @@
         {
           client_id: '71f1d422bc6645e89d29531f5f4ec3c8',
           response_type: 'token',
-          redirect_uri: 'https://osmaav.github.io/game_starcatcher_2'
+          redirect_uri: 'http://127.0.0.1:5500/main.html'
+          // redirect_uri: 'https://osmaav.github.io/game_starcatcher_2'
         },
-        // 'https://osmaav.github.io/game_starcatcher_2'
+        // 'http://127.0.0.1:5500/index.html'
+
       )
         .then(({
           handler
         }) => handler())
         .then(data => console.log('Сообщение с токеном', data))
         .catch(error => console.log('Обработка ошибки', error));
-      YaSendSuggestToken(
-        'https://osmaav.github.io/game_starcatcher_2',
-        {
-          flag: true
-        }
-      )
+
     </script>
     <H1> Заголовок!</H1>
   </body>
