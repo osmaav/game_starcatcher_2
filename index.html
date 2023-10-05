@@ -33,15 +33,21 @@
           response_type: 'token',
           redirect_uri: 'https://osmaav.github.io/game_starcatcher_2'
         },
-        'https://osmaav.github.io/game_starcatcher_2'
+        // 'https://osmaav.github.io/game_starcatcher_2'
       )
         .then(({
           handler
         }) => handler())
         .then(data => console.log('Сообщение с токеном', data))
         .catch(error => console.log('Обработка ошибки', error));
+      YaSendSuggestToken(
+        'https://osmaav.github.io/game_starcatcher_2',
+        {
+          flag: true
+        }
+      )
     </script>
-
+    <H1> Заголовок!</H1>
   </body>
 
 </html>
